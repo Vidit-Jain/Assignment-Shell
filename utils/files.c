@@ -144,14 +144,12 @@ void get_serverpath()
 {
 	if (isInSubject)
 	{
-		const char *rem_string = "../../Server";
-		server_path = make_String(rem_string);
+		server_path = make_String("../../Server");
 	}
 
 	else
 	{
-		const char *rem_string = "../Server";
-		server_path = make_String(rem_string);
+		server_path = make_String("../Server");
 	}
 }
 
@@ -161,11 +159,11 @@ int copy_to_server(String *zipfile)
 
 	getcwd(home_path->str, MAX_LEN);
 
-	get_serverpath(home_path);
+	get_serverpath();
 
 	String *command = make_empty_String();
 
-	sprintf(command->str, "cp %s/%s %s/%s > /dev/null", home_path->str, zipfile->str, server_path->str, getCurrentSubject()->str);
+	sprintf(command->str, "cp %s %s/%s > /dev/null",zipfile->str, server_path->str, getCurrentSubject()->str);
 	system(command->str);
 
 	return 1;
