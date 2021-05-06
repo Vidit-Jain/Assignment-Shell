@@ -4,6 +4,8 @@
 #include "../commands/compare.h"
 #include "../commands/test.h"
 #include "../commands/setup.h"
+#include "../commands/submit.h"
+
 
 void tokenize_input(String Input)
 {
@@ -43,6 +45,9 @@ void execute(token_mat args_mat)
     }
     else if(strcmp(args_mat.args[0], "setup") == 0) {
         commandSetup(args_mat);
+    }
+    else if(strcmp(args_mat.args[0], "submit") == 0) {
+        commandSubmit(args_mat);
     }
     else {
         printf("\n\tInvalid command \"%s\"\n\n", args_mat.args[0]);
