@@ -24,7 +24,7 @@ extern int start_point;
 extern int isInSubject;
 
 extern String home_path;
-extern String server_path;
+extern String *server_path;
 extern String prev_path;
 
 #endif
