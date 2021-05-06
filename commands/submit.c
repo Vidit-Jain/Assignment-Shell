@@ -47,7 +47,7 @@ void commandSubmit(token_mat args_mat)
     if (args_mat.num_args != 1)
     {
         printf("\n\tInvalid usage of the submit command\n\n");
-        printf("\tsetup command syntax: submit <assignment> \n\n");
+        printf("\tsubmit command syntax: submit <assignment> \n\n");
     }
     else if (!isInSubject)
     {
