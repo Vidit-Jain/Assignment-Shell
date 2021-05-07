@@ -15,11 +15,11 @@ void createassignment(String *serverpath, String *assignment) {
 
   if (!folderExists(*folder))
     printf(
-        "\n\tERROR!,No such assignment exists in server\n"); // checks whether
+        "\n\tERROR! No such assignment exists in server\n\n"); // checks whether
                                                              // assignment exists
                                                              // on server/
   else if (folderExists(*assignment))
-    printf("\n\tThis assignment was already created\n"); // checks whether
+    printf("\n\tThis assignment was already created\n\n"); // checks whether
                                                          // assignment was
                                                          // already created//
   else {
@@ -38,6 +38,7 @@ void createassignment(String *serverpath, String *assignment) {
         command->str, "cp -r  %s %s> /dev/null", dist->str,
         assignment->str); // copies dist folder from server into assignment//
     system(command->str);
+      printf("\n\tAssignment \"%s\" created\n\n", assignment->str);
   }
 }
 
