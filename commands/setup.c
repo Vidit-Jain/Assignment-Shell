@@ -27,7 +27,7 @@ int noOfTabs(String fileLine) {
 }
 
 // Returns an array of the number of indents on each line of the file
-int* countIndents(String fileName, int lines) {
+int* countIndents(String assignmentName, String fileName, int lines) {
 
 	int* indentCount = (int*)calloc(sizeof(int), lines);
 
@@ -39,19 +39,24 @@ int* countIndents(String fileName, int lines) {
 	FILE* fp = fopen(fileName.str, "r");		
 
     // fileLine will store the line we're dealing with 
-
+    int firstLine = 1;
 	while ((fileRead = getline(&(fileLine->str), &lineLength, fp)) != -1) {
-        
+
         // indentCount stores the indentation of each line
 		indentCount[currLine] = noOfTabs(*fileLine);	
 
         // getline comes with the "\n", which we don't want
 		fileLine->length = strlen(fileLine->str);
 		fileLine->str[fileLine->length- 1]  = '\0';	
-		
+
         // Skipping the indents in the String to make the folder name
         String* folderName =  make_String(&(fileLine->str[indentCount[currLine]]));
 
+        // Checks if the first folder of the setup corresponds to the assignment we're in
+        if (firstLine && strcmp(folderName->str, assignmentName.str) != 0) {
+            indentCount[0] = -2;
+            break;
+        }
         /* Verifying if the folder name is valid, if not then set 
          * the first line's indent to -1 to indicate invalid naming.
          */
@@ -61,7 +66,7 @@ int* countIndents(String fileName, int lines) {
 		}	
 
 		currLine++;
-
+        firstLine = 0;
         if (currLine == lines) break;
 	}
 
@@ -143,12 +148,17 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
  * 2 - Multiple Assignments (More than one line has zero indents, which isn't allowed)
  * 3 - Both 1 and 2 have occurred
  * 4 - If any of the file names are invalid
+ * 5 - If the assignment name specified in the first line doesn't correspond with the
+ *     assignment we're setting up
  */
 
 int validFileStructure(int* arr, int lines) {
 	int code;
 	if (arr[0] == -1) {
 		code = 4;
+	}
+	else if (arr[0] == -2){
+	    code = 5;
 	}
 	else {
 		int flag = arr[0] == 0;
@@ -161,24 +171,57 @@ int validFileStructure(int* arr, int lines) {
 	}
 	return code;
 }
-String* fileOnServer(String fileName) {
-    String* serverFile = make_empty_String();
-    sprintf(serverFile->str, "../../Server/%s/%s", getCurrentSubject()->str,fileName.str);
-    return serverFile;
+// Returns the path to the setup.txt file in the assignment
+String* fileInAssignment(String assignment) {
+    String* setupFile = make_empty_String();
+    sprintf(setupFile->str, "%s/dist/setup.txt", assignment.str);
+    return setupFile;
+}
+/*
+ * 1. Checks if the assignment exists in the subject
+ * 2. Checks if there is a dist folder in the assignment
+ * 3. Checks if there is a setup.txt file in the dist folder
+ * If any one of them is false, we do not perform the setup
+ * Else we return 1 to indicate that the file does exist
+ */
+int setupExists(String assignmentName) {
+    String* textFilePath = make_String(assignmentName.str);
+
+    if (!folderExists(*textFilePath)) {
+        printf("\n\tAssignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        return 0;
+    }
+    else {
+        textFilePath = attach_String(textFilePath->str, "/dist");
+        if (!folderExists(*textFilePath)) {
+            printf("\n\tThe dist folder doesn't exist in \"%s\"\n\n", assignmentName.str);
+            return 0;
+        }
+        else {
+            textFilePath = attach_String(textFilePath->str, "/setup.txt");
+            if(!fileExists(*textFilePath)) {
+                printf("\n\tsetup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
+                return 0;
+            }
+        }
+
+    }
+    return 1;
 }
 
-void setup(String fileName) {
-    String serverFileName = *fileOnServer(fileName);
-    if (!fileExists(serverFileName)) {
-        printf("%s file doesn't exist\n", fileName.str);
-        return;
-    }
+void setup(String assignmentName) {
+    String textFilePath = *fileInAssignment(assignmentName);
 
-	int lines = countLines(serverFileName);
-	int* indentCount = countIndents(serverFileName, lines);
+    if(!setupExists(assignmentName)) return; // Don't try to setup if the file doesn't exist
+
+	int lines = countLines(textFilePath);
+	int* indentCount = countIndents(assignmentName,textFilePath, lines);
 	int code = validFileStructure(indentCount, lines);
 
-	if (code == 4) {
+	if (code == 5) {
+        printf("\n\tWrong assignment name in setup.txt file\n\n");
+	}
+	else if (code == 4) {
 		printf("\n\tInvalid folder name/s\n\n");
 	}
 	else if (code == 3) {
@@ -189,9 +232,10 @@ void setup(String fileName) {
 	}
 	else if (code == 1) {
 		printf("\n\tInvalid indenting in the file structure\n\n");
-	}	
+	}
 	else {
-		createFileStructure(serverFileName, indentCount, lines);
+	    // Creates file structure if there are no issues with the file
+		createFileStructure(textFilePath, indentCount, lines);
 	}
 
 	free(indentCount);
