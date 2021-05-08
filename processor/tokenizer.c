@@ -124,6 +124,11 @@ void execute(token_mat args_mat)
     {
         exec(args_mat);
     }
+    else if (strcmp(args_mat.args[0], "tree") == 0)
+    {
+
+        exec(args_mat);
+    }
     else
     {
         printf("\n\tInvalid command \"%s\"\n\n", args_mat.args[0]);
