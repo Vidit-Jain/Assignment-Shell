@@ -9,7 +9,7 @@ typedef pair<int, int> ii;
 typedef vector<int> vi;
 typedef vector<bool> vb;
 typedef vector<vi> vvi;
-typedef vector<pii> vii;
+typedef vector<ii> vii;
 typedef vector<vii> vvii;
 #define ff first
 #define ss second
@@ -22,5 +22,8 @@ typedef vector<vii> vvii;
 
 int main(){
 	fightFight;
-	
+	cout << "hello\n";
+	for (int i = 0; i < 10; i++) {
+		cout << i << " ";
+	}
 }

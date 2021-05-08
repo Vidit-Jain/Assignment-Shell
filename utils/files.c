@@ -74,17 +74,6 @@ int unzipToDirectory(String zipName, String path)  {
     return 1;
 }
 
-void folderHash(String assignmentName, String hashName) {
-    String* command = make_empty_String();
-    sprintf(command->str,"find %s -type f -print0 | sort -z | xargs -r0 md5sum > %s", assignmentName.str, hashName.str);
-    system(command->str);
-}
-void zipHash(String fileName, String hashName) {
-    unzipToDirectory(fileName, *make_String("TemporaryMD5/"));
-    folderHash(*make_String("TemporaryMD5/"), hashName);
-    deleteFolder(*make_String("TemporaryMD5"));
-}
-
 int createFolder(String folder)
 {
 	if (folderExists(folder))
