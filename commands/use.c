@@ -3,7 +3,7 @@ void updateUseGlobal()
 {
     UseCond = 1;
 }
-void CommandUse(token_mat args_mat)
+void commandUse(token_mat args_mat)
 {
     if (UseCond == 0)
         UseAssignmentName = make_empty_String();

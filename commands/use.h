@@ -3,4 +3,4 @@
 #include "../processor/input.h"
 #include "../processor/tokenizer.h"
 
-void CommandUse(token_mat args_mat);
+void commandUse(token_mat args_mat);
