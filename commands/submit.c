@@ -25,21 +25,26 @@ void userCommandSubmit(String folder)
     int successful = createAssignmentZip(folder);
 
     if (successful)
-        printf("%s created successfully\n", zip_name->str);
+        printf("\n\t%s created successfully\n\n", zip_name->str);
     else
-        printf("Assignment \"%s\" doesn't exist\n", folder.str);
+    {
+        printf("\n\tAssignment \"%s\" doesn't exist\n\n", folder.str);
+    }
+
+    IFsubmission_folder(folder, zip_name);
 
     if (successful)
     {
-        if (copy_to_server(find_zip(zip_name)))
+        if (copy_to_server(find_zip(zip_name), folder))
         {
-            printf("%s successfully submitted to server\n\n", zip_name->str);
+            printf("\n\t%s successfully submitted to server\n\n", zip_name->str);
         }
         else
         {
-            printf("%s caused error in copying\n\n", zip_name->str);
+            printf("\n\t%s wasn't copied due to duplicate\n\n", zip_name->str);
         }
     }
+    printf("\n\t Hello \n\n");
 }
 
 void commandSubmit(token_mat args_mat)
