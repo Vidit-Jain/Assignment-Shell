@@ -76,6 +76,9 @@ void commandCompare(token_mat args_mat) {
     else {
         String *folder = make_String(args_mat.args[1]);
         String *file = make_String(args_mat.args[2]);
-        compareAssignment(*folder, *file);
+
+        //compareAssignment(*folder, *file);
+        folderHash(*folder, *make_String("checkList.chk"));
+        zipHash(*file, *make_String("checkList2.chk"));
     }
 }
