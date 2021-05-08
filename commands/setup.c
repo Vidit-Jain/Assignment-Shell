@@ -46,8 +46,10 @@ int* countIndents(String assignmentName, String fileName, int lines) {
 		indentCount[currLine] = noOfTabs(*fileLine);	
 
         // getline comes with the "\n", which we don't want
+        // Last line doesn't have "\n"
 		fileLine->length = strlen(fileLine->str);
-		fileLine->str[fileLine->length- 1]  = '\0';	
+		if (currLine + 1 < lines)
+            fileLine->str[fileLine->length- 1]  = '\0';
 
         // Skipping the indents in the String to make the folder name
         String* folderName =  make_String(&(fileLine->str[indentCount[currLine]]));
@@ -130,8 +132,11 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
         folderName = copy_String(folderName, directory);
         strcpy(folderName->str, directory->str);
         folderName = attach_String(folderName->str, "/");
+
 		curr->length = strlen(curr->str);
-		curr->str[curr->length - 1] = '\0';
+
+		if (curr_line + 1 < lines)
+            curr->str[curr->length - 1] = '\0';
 
         folderName = attach_String(folderName->str, &(curr->str[indentCount[curr_line]]));
         
