@@ -126,27 +126,32 @@ String *getCurrentSubject()
 	int strLen = strlen(homePath->str);
 	String *currSubject = make_empty_String();
 
+	char *token;
+	token = strtok(homePath->str, "/");
+	String *prev = make_empty_String();
+
 	if (isInSubject)
 	{
-		int lastForward = -1;
-		for (int i = 0; i < strLen; i++)
+		while (token != NULL)
 		{
-			if (homePath->str[i] == '/')
-				lastForward = i;
+			strcpy(prev->str, token);
+			token = strtok(NULL, "/");
 		}
-		int counter = 0;
-		for (int i = lastForward + 1; i < strLen; i++)
-		{
-			currSubject->str[counter] = homePath->str[i];
-			counter++;
-		}
-		currSubject->str[counter] = '\0';
 	}
-	return currSubject;
+
+	for (int i = 0; i < Server_file_count; i++)
+	{
+		if (strcmp(prev->str, Subject_array[i].str) == 0)
+			return prev;
+	}
+
+	strcpy(prev->str, "");
+	return prev;
 }
 void enterSubjectDirectory()
 {
 	chdir("Subjects");
+	printf("Enter switch <subject_name> to begin\n");
 }
 
 void get_serverpath()
@@ -172,7 +177,7 @@ int copy_to_server(String *zipfile)
 
 	String *command = make_empty_String();
 
-	sprintf(command->str, "cp %s %s/%s > /dev/null",zipfile->str, server_path->str, getCurrentSubject()->str);
+	sprintf(command->str, "cp %s %s/%s > /dev/null", zipfile->str, server_path->str, getCurrentSubject()->str);
 	system(command->str);
 
 	return 1;
