@@ -4,13 +4,15 @@
 #include <math.h>
 
 #include "string.h"
+#include "../globals.h"
+
 #define MAX_LEN 2000
 
 String *make_empty_String()
 {
     String *empty;
-    empty = (String*) malloc(sizeof(String));
-    empty->str = (char*)malloc(sizeof(char) * 100);
+    empty = (String *)malloc(sizeof(String));
+    empty->str = (char *)malloc(sizeof(char) * MAX_TOKEN_LENGTH);
 
     return empty;
 }
@@ -63,7 +65,7 @@ int compare_String(String str1, String str2)
 
 String *break_String(String src, int break_len)
 {
-    String* dest = make_empty_String();
+    String *dest = make_empty_String();
 
     dest->length = break_len + 1;
 

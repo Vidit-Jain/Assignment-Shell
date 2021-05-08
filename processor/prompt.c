@@ -14,6 +14,11 @@ void Initialize()
 
 void prompt_print()
 {
-    printf("<%s:%s/$ ", get_username().str, getCurrentSubject()->str);
+    if (UseCond)
+
+        printf("<%s:%s/<%s>$ ", get_username().str, getCurrentSubject()->str, UseAssignmentName->str);
+    else
+        printf("<%s:%s/$ ", get_username().str, getCurrentSubject()->str);
+
     fflush(stdout);
 }
