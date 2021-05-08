@@ -10,7 +10,7 @@ String *make_empty_String()
 {
     String *empty;
     empty = (String*) malloc(sizeof(String));
-    empty->str = (char*)malloc(sizeof(char) * 100);
+    empty->str = (char*)malloc(sizeof(char) * 200);
 
     return empty;
 }

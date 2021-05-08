@@ -9,6 +9,9 @@ int deleteFile(String path);
 int deleteFolder(String path);
 
 int createZip(String path, String zipName);
+int unzipToDirectory(String zipName, String path);
+void folderHash(String assignmentName, String hashName);
+void zipHash(String fileName, String hashName);
 String *find_zip(String *file);
 
 int validFileName(String name);
