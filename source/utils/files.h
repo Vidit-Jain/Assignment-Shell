@@ -22,4 +22,6 @@ void enterSubjectDirectory();
 
 String *getCurrentSubject();
 int copy_to_server(String *zipfile, String assignment_folder);
+
+void printError(String message);
 #endif

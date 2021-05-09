@@ -13,16 +13,15 @@ void createAssignment(String *serverPath, String *assignment) {
   folder = attach_String(serverPath->str, "/");
   folder = attach_String(folder->str, assignment->str);
 
-  if (!folderExists(*folder))
-    printf(
-        "\n\tERROR! No such assignment exists in server\n\n"); // checks whether
-                                                               // assignment
-                                                               // exists on
-                                                               // server/
-  else if (folderExists(*assignment))
-    printf("\n\tThis assignment was already created\n\n"); // checks whether
-                                                           // assignment was
-                                                           // already created//
+  if (!folderExists(*folder)) {
+      String* error = make_String( "\n\tERROR: No such assignment exists in server\n\n"); // checks whether
+      printError(*error);                                                                    // assignment
+  }                                                                                         // exists on // server/
+  else if (folderExists(*assignment)) {
+      String* error = make_String("\n\tERROR: This assignment was already created\n\n");
+      printError(*error); // checks whether
+  }                      // assignment was
+                        // already created//
   else {
     createFolder(*assignment); // creates folder for assignment//
 
@@ -52,12 +51,12 @@ void commandCreate(token_mat args_mat) {
 
   if (args_mat.num_args != 1) {
 
-    printf("\n\tInvalid usage of the create command\n\n");
-    printf("\tcreate command syntax: create <assignment> \n\n");
+    String* error = make_String("\n\tERROR: Invalid usage of the create command\n\n\tcreate command syntax: create <assignment> \n\n");
+    printError(*error);
 
   } else if (!isInSubject) {
-
-    printf("\n\tError: You are not in a Subject yet\n\n");
+      String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+      printError(*error);
 
   } else {
 

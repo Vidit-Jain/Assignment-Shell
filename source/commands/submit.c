@@ -33,7 +33,9 @@ void userCommandSubmit(String folder)
         printf("\n\t%s created successfully\n\n", zip_name->str);
     else
     {
-        printf("\n\tAssignment \"%s\" doesn't exist\n\n", folder.str);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", folder.str);
+        printError(*error);
     }
 
     IFsubmission_folder(folder, zip_name);
@@ -46,25 +48,28 @@ void userCommandSubmit(String folder)
         }
         else
         {
-            printf("\n\t%s wasn't copied due to duplicate\n\n", zip_name->str);
+            String* error = make_empty_String();
+            sprintf(error->str, "\n\tERROR: %s wasn't copied due to duplicate\n\n", zip_name->str);
+            printError(*error);
         }
     }
 }
 
 /* this is the function that is being called by the tokenizer and input is 
 provided to it and it checks edge cases and then only send the input
-further to main submit functionwhich does its operation as defined
+further to main submit function which does its operation as defined
 */
 void commandSubmit(token_mat args_mat)
 {
     if (args_mat.num_args != 1)
     {
-        printf("\n\tInvalid usage of the submit command\n\n");
-        printf("\tsubmit command syntax: submit <assignment> \n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the submit command\n\n\tsetup command syntax: setup <assignment>\n\n");
+        printError(*error);
     }
     else if (!isInSubject)
     {
-        printf("\n\tError: You are not in a Subject yet\n\n");
+        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        printError(*error);
     }
     else
     {

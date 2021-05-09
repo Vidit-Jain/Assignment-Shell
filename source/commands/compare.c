@@ -64,7 +64,9 @@ void compareHash(String file1, String file2) {
         if (comparePaths == 0) {
 
             if (strcmp(hash1->str, hash2->str) != 0) {
-                printf("\t%s has been modified\n", path1->str);
+                String* error = make_empty_String();
+                sprintf(error->str, "\t%s has been modified\n", path1->str);
+                printError(*error);
                 flag = 0;
             }
 
@@ -76,9 +78,9 @@ void compareHash(String file1, String file2) {
             indexZip++;
         }
         else if (comparePaths > 0) {  // Implies a file has been deleted from the directory
-
-            printf("\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
-
+            String* error = make_empty_String();
+            sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
+            printError(*error);
             flag = 0; // Integrity is not maintained so we change the flag
 
             // Increment the lines in the zip file as it's lexicographically behind
@@ -86,8 +88,9 @@ void compareHash(String file1, String file2) {
             indexZip++;
         }
         else { // A new file was added into the directory
-            printf("\t%s is in the directory but not in the zip file\n", path1->str);
-
+            String* error = make_empty_String();
+            sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
+            printError(*error);
             flag = 0; // Integrity is not maintained so we change the flag
 
             // Increment the lines in the directory as it's lexicographically behind
@@ -98,7 +101,9 @@ void compareHash(String file1, String file2) {
 
     // Going over the leftover lines in the hash value checklist
     while (indexZip < zipFileLines) {
-        printf("\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
+        String* error = make_empty_String();
+        sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
+        printError(*error);
 
         flag = 0;
 
@@ -107,7 +112,9 @@ void compareHash(String file1, String file2) {
     }
 
     while (indexAssignment < assignmentFileLines) {
-        printf("\t%s is in the directory but not in the zip file\n", path1->str);
+        String* error = make_empty_String();
+        sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
+        printError(*error);
 
         flag = 0;
 
@@ -142,10 +149,16 @@ void compareAssignment(String folder, String file) {
     int flag = folderExists(folder) && fileExists(file);
 
     if (!flag) {
-        if (!folderExists(folder))
-            printf("\n\tAssignment \"%s\" doesn't exist\n", folder.str);
-        if (!fileExists(file))
-            printf("\n\tFile \"%s\" doesn't exist\n", file.str);
+        if (!folderExists(folder)) {
+            String* error = make_empty_String();
+            sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n", folder.str);
+            printError(*error);
+        }
+        if (!fileExists(file)) {
+            String* error = make_empty_String();
+            sprintf(error->str,"\n\tERROR: File \"%s\" doesn't exist\n", file.str);
+            printError(*error);
+        }
         printf("\n");
     }
     else {
@@ -156,11 +169,12 @@ void compareAssignment(String folder, String file) {
 
 void commandCompare(token_mat args_mat) {
     if (args_mat.num_args != 2) {
-        printf("\n\tInvalid usage of the compare command\n\n");
-        printf("\tcompare command syntax: compare <assignment> <zipfile> \n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the compare command\n\n\tcompare command syntax: compare <assignment> <zipfile> \n\n");
+        printError(*error);
     }
     else if (!isInSubject) {
-        printf("\n\tError: You are not in a Subject yet\n\n");
+        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        printError(*error);
     }
     else {
         String *folder = make_String(args_mat.args[1]);

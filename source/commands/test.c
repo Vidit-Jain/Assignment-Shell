@@ -17,12 +17,18 @@ void test(String folder)
   if (!flag1)
   {
 
-    if (!folderExists(folder)) // checks whether given assignment exists//
-      printf("\n\tAssignment \"%s\" doesn't exist\n", folder.str);
-    else if (!fileExists(*file)) // checks whether submitter.py exists in assignment//
-      printf("\n\tAssignment \"%s\" cannot be tested as it does not contain "
-             "submitter.py file\n",
-             folder.str);
+    if (!folderExists(folder)) { // checks whether given assignment exists//
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tAssignment \"%s\" doesn't exist\n", folder.str);
+        printError(*error);
+    }
+    else if (!fileExists(*file)) { // checks whether submitter.py exists in assignment//
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tAssignment \"%s\" cannot be tested as it does not contain "
+               "submitter.py file\n",
+               folder.str);
+        printError(*error);
+    }
 
     printf("\n");
   }
@@ -62,12 +68,13 @@ void commandTest(token_mat args_mat)
 {
   if (args_mat.num_args != 1)
   {
-    printf("\n\tInvalid usage of the test command\n\n");
-    printf("\ttest command syntax: test <assignment> \n\n");
+      String* error = make_String("\n\tERROR: Invalid usage of the test command\n\n\ttest command syntax: test <assignment>\n\n");
+      printError(*error);
   }
   else if (!isInSubject)
   {
-    printf("\n\tError: You are not in a Subject yet\n\n");
+      String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+      printError(*error);
   }
   else
   {

@@ -8,7 +8,12 @@
 #include "string.h"
 
 #define MAX_LEN 2000
-
+// Prints an error in rea
+void printError(String message) {
+    printf("\033[1;31m");
+    printf("%s", message.str);
+    printf("\033[0m");
+}
 // Takes in a path and verifies if such a folder exists
 int folderExists(String path)
 {
@@ -264,7 +269,9 @@ int copy_to_server(String *zipfile, String assignment_folder)
 			}
 			else
 			{
-				printf("\n\tWrong Command, please enter again!\n\n");
+
+				String* error = make_String("\n\tERROR: Wrong Command, please enter again!\n\n");
+                printError(*error);
 			}
 		}
 	}
@@ -278,3 +285,4 @@ int copy_to_server(String *zipfile, String assignment_folder)
 		return 1;
 	}
 }
+

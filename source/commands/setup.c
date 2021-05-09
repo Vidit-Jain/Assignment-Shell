@@ -193,19 +193,25 @@ int setupExists(String assignmentName) {
     String* textFilePath = make_String(assignmentName.str);
 
     if (!folderExists(*textFilePath)) {
-        printf("\n\tAssignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        printError(*error);
         return 0;
     }
     else {
         textFilePath = attach_String(textFilePath->str, "/dist");
         if (!folderExists(*textFilePath)) {
-            printf("\n\tThe dist folder doesn't exist in \"%s\"\n\n", assignmentName.str);
+            String* error = make_empty_String();
+            sprintf(error->str, "\n\tERROR: The dist folder doesn't exist in \"%s\"\n\n", assignmentName.str);
+            printError(*error);
             return 0;
         }
         else {
             textFilePath = attach_String(textFilePath->str, "/setup.txt");
             if(!fileExists(*textFilePath)) {
-                printf("\n\tsetup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
+                String* error = make_empty_String();
+                sprintf(error->str, "\n\tsetup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
+                printError(*error);
                 return 0;
             }
         }
@@ -222,21 +228,26 @@ void setup(String assignmentName) {
 	int lines = countLines(textFilePath);
 	int* indentCount = countIndents(assignmentName,textFilePath, lines);
 	int code = validFileStructure(indentCount, lines);
-
+    String* error = make_empty_String();
 	if (code == 5) {
-        printf("\n\tWrong assignment name in setup.txt file\n\n");
+        sprintf(error->str, "\n\tERROR: Wrong assignment name in setup.txt file\n\n");
+        printError(*error);
 	}
 	else if (code == 4) {
-		printf("\n\tInvalid folder name/s\n\n");
+		sprintf(error->str, "\n\tERROR: Invalid folder name/s\n\n");
+		printError(*error);
 	}
 	else if (code == 3) {
-		printf("\n\tInvalid indenting and multiple assignments specified\n\n");
+		sprintf(error->str, "\n\tERROR: Invalid indenting and multiple assignments specified\n\n");
+		printError(*error);
 	}
 	else if (code == 2) {
-		printf("\n\tYou can only create one assignment at a time\n\n");
+		sprintf(error->str, "\n\tERROR: You can only create one assignment at a time\n\n");
+		printError(*error);
 	}
 	else if (code == 1) {
-		printf("\n\tInvalid indenting in the file structure\n\n");
+		sprintf(error->str, "\n\tERROR: Invalid indenting in the file structure\n\n");
+		printError(*error);
 	}
 	else {
 	    // Creates file structure if there are no issues with the file
@@ -249,11 +260,12 @@ void setup(String assignmentName) {
 
 void commandSetup(token_mat args_mat) {
     if (args_mat.num_args != 1) {
-        printf("\n\tInvalid usage of the setup command\n\n");
-        printf("\tsetup command syntax: setup <assignment> \n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the setup command\n\n\tsetup command syntax: setup <assignment>\n\n");
+        printError(*error);
     }
     else if (!isInSubject) {
-        printf("\n\tError: You are not in a Subject yet\n\n");
+        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        printError(*error);
     }
     else {
         String *fileName = make_String(args_mat.args[1]);

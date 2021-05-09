@@ -32,7 +32,9 @@ void switchSubject(String subject) {
 
     if (!flag)
     {
-        printf("\n\tSubject \"%s\" doesn't exist\n\n", subject.str);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Subject \"%s\" doesn't exist\n\n", subject.str);
+        printError(*error);
         if(isInSubject == 1) chdir(currentSubject->str);
     }
     else
@@ -48,8 +50,8 @@ void switchSubject(String subject) {
 
 void commandSwitch(token_mat args_mat) {
     if (args_mat.num_args != 1) {
-        printf("\n\tInvalid usage of the switch command\n\n");
-        printf("\tswitch command syntax: switch <subject> \n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the switch command\n\n\tswitch command syntax: switch <assignment>\n\n");
+        printError(*error);
     }
     else {
         String *subjectName = make_String(args_mat.args[1]);

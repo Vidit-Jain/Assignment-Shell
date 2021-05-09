@@ -137,6 +137,8 @@ void execute(token_mat args_mat)
     }
     else
     {
-        printf("\n\tInvalid command \"%s\"\n\n", args_mat.args[0]);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Invalid command \"%s\"\n\n", args_mat.args[0]);
+        printError(*error);
     }
 }

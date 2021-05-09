@@ -22,11 +22,12 @@ void useAssignment(String assignmentName) {
 void commandUse(token_mat args_mat)
 {
     if (args_mat.num_args != 1) {
-        printf("\n\tInvalid usage of the use command\n\n");
-        printf("\tuse command syntax: use <assignment>\n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the use command\n\n\tuse command syntax: use <assignment> \n\n");
+        printError(*error);
     }
     else if (!isInSubject) {
-        printf("\n\tError: You are not in a Subject yet\n\n");
+        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        printError(*error);
     }
     else {
         String* assignmentName = make_String(args_mat.args[1]);

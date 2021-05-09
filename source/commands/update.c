@@ -11,8 +11,11 @@ void updateAssignment(String *serverPath,String *assignment)
 
     if(!flag)
     {
-        if (!folderExists(*folder))
-            printf("\n\tERROR! No such assignment exists for this Subject\n\n");
+        if (!folderExists(*folder)){
+            String* error = make_empty_String();
+            sprintf(error->str, "\n\tERROR: No such assignment exists for this Subject\n\n");
+            printError(*error);
+        }
         else
         {
             //the assignment exists in the server , calling the create function
@@ -74,12 +77,13 @@ void updateAssignment(String *serverPath,String *assignment)
 void commandUpdate(token_mat args_mat)
 {
     if (args_mat.num_args != 1) {
-        printf("\n\tInvalid usage of the update command\n\n");
-        printf("\tupdate command syntax: update <assignment> \n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the update command\n\n\tupdate command syntax: update <assignment> \n\n");
+        printError(*error);
     }
     else if (!isInSubject)
     {
-        printf("\n\tError: You are not in a Subject yet\n\n");
+        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        printError(*error);
     }
     else
     {
