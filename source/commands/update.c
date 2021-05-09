@@ -16,7 +16,7 @@ void updateAssignment(String *serverPath,String *assignment)
         else
         {
             //the assignment exists in the server , calling the create function
-            printf("\n\tNo such assignment exists on your local machine , Creating it from the server\n\n");
+            printf("\n\tNo such assignment exists on your local machine, Creating it from the server\n\n");
             createAssignment(serverPath,assignment);
         }
 

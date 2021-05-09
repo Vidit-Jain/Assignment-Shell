@@ -1,6 +1,6 @@
 #include "sysinfo.h"
 
-String get_username()
+String get_username()//gets the username
 {
     String username;
     struct passwd *p = getpwuid(getuid());
@@ -10,7 +10,7 @@ String get_username()
     return username;
 }
 
-String get_pwd()
+String get_pwd() //gets the machine name but this isnt used
 {
     if (start_point == 0)
     {
@@ -31,7 +31,7 @@ String get_pwd()
     return current_path;
 }
 
-void out_pwd()
+void out_pwd()//unused util
 {
     String current_path;
     current_path.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);

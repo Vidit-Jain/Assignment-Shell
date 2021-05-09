@@ -1,7 +1,7 @@
 #include "prompt.h"
 #include "../globals.h"
 #include "../utils/files.h"
-void Initialize()
+void Initialize()  //initialize the home_path and prev_path
 {
     home_path.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
     getcwd(home_path.str, MAX_TOKEN_LENGTH);
@@ -12,7 +12,7 @@ void Initialize()
     prev_path.length = strlen(prev_path.str);
 }
 
-void prompt_print()
+void prompt_print() //print the username and subject to give terminal feel
 {
     if (UseCond)
 

@@ -14,19 +14,19 @@ void tokenize_input(String Input)
     token_mat args_mat;
     args_mat = make_args_mat();
     char *token;
-    token = strtok(Input.str, " ");
+    token = strtok(Input.str, " "); //tokenize the input string
     int i = 0;
 
-    if (strcmp(token, "quit") == 0)
+    if (strcmp(token, "quit") == 0) //exit
     {
         exit(0);
     }
-    if (strcmp(token, "list") == 0)
+    if (strcmp(token, "list") == 0) //rename list to ls
     {
         strcpy(token, "ls");
     }
 
-    while (token != NULL)
+    while (token != NULL)  //store the tokenized string in a token matrix
     {
         args_mat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
         strcpy(args_mat.args[i], token);
@@ -35,7 +35,7 @@ void tokenize_input(String Input)
     }
     args_mat.num_args = i - 1; //number of arguments to a command
     args_mat.args[i] = token;
-    execute(args_mat);
+    execute(args_mat); //send it to the required command
 }
 
 void execute(token_mat args_mat)

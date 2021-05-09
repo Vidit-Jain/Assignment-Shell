@@ -9,7 +9,7 @@ void Initialize_subject_array()
 
     Server_file_count = 0;
 
-    if (d)
+    if (d) //gets us the number of subjects
     {
         while ((dir = readdir(d)) != NULL)
         {
@@ -31,11 +31,11 @@ void Initialize_subject_array()
     if (d)
     {
         int i = 0;
-        while ((dir = readdir(d)) != NULL)
+        while ((dir = readdir(d)) != NULL) 
         {
             if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
             {
-                strcpy(Subject_array[i].str, dir->d_name);
+                strcpy(Subject_array[i].str, dir->d_name);  //stores the subject name
                 Subject_array[i].length = strlen(Subject_array[i].str);
 
                 i++;

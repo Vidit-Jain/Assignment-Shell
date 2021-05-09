@@ -28,9 +28,9 @@ extern String *server_path;
 extern String prev_path;
 
 extern int Server_file_count;
-extern String *Subject_array;
+extern String *Subject_array; //stores all the subject names
 
 extern int UseCond;
-extern String *UseAssignmentName;
+extern String *UseAssignmentName; //stores the Assignment name 
 
 #endif

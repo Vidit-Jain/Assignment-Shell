@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "input_mat.h"
 
-token_mat make_args_mat()
+token_mat make_args_mat() //initializes the token matrix to store user command name and arguments
 {
     token_mat args_mat; 
     
