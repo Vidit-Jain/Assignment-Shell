@@ -42,7 +42,7 @@ void createAssignment(String *serverPath, String *assignment) {
       system(command->str);
       printf("\n\tAssignment \"%s\" created\n\n", assignment->str);
     } else {
-      printf("\n\t Assignment \"%s\" created without dist folder",
+      printf("\n\t Assignment \"%s\" created without dist folder\n\n",
              assignment->str);
     }
   }
