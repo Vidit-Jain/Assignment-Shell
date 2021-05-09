@@ -16,12 +16,13 @@ void createAssignment(String *serverPath, String *assignment) {
   if (!folderExists(*folder))
     printf(
         "\n\tERROR! No such assignment exists in server\n\n"); // checks whether
-                                                             // assignment exists
-                                                             // on server/
+                                                               // assignment
+                                                               // exists on
+                                                               // server/
   else if (folderExists(*assignment))
     printf("\n\tThis assignment was already created\n\n"); // checks whether
-                                                         // assignment was
-                                                         // already created//
+                                                           // assignment was
+                                                           // already created//
   else {
     createFolder(*assignment); // creates folder for assignment//
 
@@ -34,11 +35,16 @@ void createAssignment(String *serverPath, String *assignment) {
             assignment->str); // finds all pdf files present in server and
                               // copies them to assignment
     system(command->str);
-    sprintf(
-        command->str, "cp -r  %s %s> /dev/null", dist->str,
-        assignment->str); // copies dist folder from server into assignment//
-    system(command->str);
+    if (folderExists(*dist)) {
+      sprintf(
+          command->str, "cp -r  %s %s> /dev/null", dist->str,
+          assignment->str); // copies dist folder from server into assignment//
+      system(command->str);
       printf("\n\tAssignment \"%s\" created\n\n", assignment->str);
+    } else {
+      printf("\n\t Assignment \"%s\" created without dist folder",
+             assignment->str);
+    }
   }
 }
 
@@ -60,7 +66,5 @@ void commandCreate(token_mat args_mat) {
     String *serverPath = make_String("../../Server/");
     serverPath = attach_String(serverPath->str, currSubj->str);
     createAssignment(serverPath, assignmentName);
-
   }
-
 }
