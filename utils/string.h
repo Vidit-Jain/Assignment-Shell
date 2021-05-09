@@ -9,13 +9,12 @@
 String *make_empty_String();
 String *copy_String(String *dest, String *src);
 String *break_String(String src, int break_len);
-String *make_String(const char src[]); // Makes a input String into newly created String data-type
+String *make_String(const char src[]); 
 int compare_String(String str1, String str2);
-String delete_String(String x);
+String erase_String(String x);
 
-// Some more important functions
+// utility function 
 
 String *attach_String(char x[], char y[]);
-String *convert_to_String(long long int data);
 
 #endif
