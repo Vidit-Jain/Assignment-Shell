@@ -140,19 +140,6 @@ void enterSubjectDirectory()
 	chdir("Subjects");
 }
 
-// void get_serverpath()
-// {
-// 	if (isInSubject)
-// 	{
-// 		server_path = make_String("../../Server");
-// 	}
-
-// 	else
-// 	{
-// 		server_path = make_String("../Server");
-// 	}
-// }
-
 void IFsubmission_folder(String assignment_folder, String *zipfile)
 {
 	String *submission_folder;
@@ -181,7 +168,6 @@ int zipexists(String folder)
 		{
 			if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
 			{
-				printf("\nfilename : %s\n", dir->d_name);
 				if (strcmp(folder.str, dir->d_name) == 0)
 				{
 					return 1;
@@ -200,8 +186,6 @@ int copy_to_server(String *zipfile, String assignment_folder)
 
 	getcwd(home_path->str, MAX_LEN);
 
-	// get_serverpath();
-
 	String *path = make_empty_String();
 	path->str = "../../Server/";
 
@@ -214,17 +198,26 @@ int copy_to_server(String *zipfile, String assignment_folder)
 
 	if (fileExists(*zipfile))
 	{
-		int flag = 0;
-		while (!flag)
+		while (1)
 		{
-			char *prompt = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-			printf("\n\tThe zip file already exists!\n\t Enter Overwrite to replace existing file or Return to leave as it is.\n\n");
-			scanf("%s", prompt);
+			String* prompt = make_empty_String();
+			printf("\n\tThe zip file already exists!\n\tEnter Overwrite to replace existing file or Return to leave as it is: ");
+            int i = 0;
+            char temp;
+            while (1)
+            {
+                temp = (char)getchar();
+                if (temp != '\n')
+                    prompt->str[i++] = temp;
+                else
+                {
+                    prompt->str[i] = '\0';
+                    break;
+                }
+            }
 
-			if (strcmp(prompt, "Overwrite") == 0)
+			if (strcmp(prompt->str, "Overwrite") == 0)
 			{
-				flag = 1;
-				printf("\n\t%s\n", path->str);
 				deleteFile(*path);
 				String *command = make_empty_String();
 
@@ -232,9 +225,8 @@ int copy_to_server(String *zipfile, String assignment_folder)
 				system(command->str);
 				return 1;
 			}
-			else if (strcmp(prompt, "Return") == 0)
+			else if (strcmp(prompt->str, "Return") == 0)
 			{
-				flag = 1;
 				return 0;
 			}
 			else

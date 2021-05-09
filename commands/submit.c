@@ -44,7 +44,6 @@ void userCommandSubmit(String folder)
             printf("\n\t%s wasn't copied due to duplicate\n\n", zip_name->str);
         }
     }
-    printf("\n\t Hello \n\n");
 }
 
 void commandSubmit(token_mat args_mat)
