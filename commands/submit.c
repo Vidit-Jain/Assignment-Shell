@@ -8,11 +8,16 @@
 #include "submit.h"
 #include "../utils/files.h"
 
+// supporting function which creates zip for assignment folder
 int createAssignmentZip(String path)
 {
     return createZip(path, path);
 }
 
+/* this function is called upon when we are in a subject directory and 
+the submit command was used properly 
+without any wrong syntax
+*/
 void userCommandSubmit(String folder)
 {
     String *zip_name = make_empty_String();
@@ -35,7 +40,7 @@ void userCommandSubmit(String folder)
 
     if (successful)
     {
-        if (copy_to_server(find_zip(zip_name), folder))
+        if (copy_to_server(zip_name, folder))
         {
             printf("\n\t%s successfully submitted to server\n\n", zip_name->str);
         }
@@ -46,6 +51,10 @@ void userCommandSubmit(String folder)
     }
 }
 
+/* this is the function that is being called by the tokenizer and input is 
+provided to it and it checks edge cases and then only send the input
+further to main submit functionwhich does its operation as defined
+*/
 void commandSubmit(token_mat args_mat)
 {
     if (args_mat.num_args != 1)

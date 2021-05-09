@@ -55,14 +55,6 @@ int deleteFolder(String path)
 	return 1;
 }
 
-String *find_zip(String *file)
-{
-	if (fileExists(*file))
-	{
-		return file;
-	}
-}
-
 /* Zips a folder specified by path
  * Returns 0 if the folder doesn't exist
  * Returns 1 if the folder exists and you create a zip with the name as zipName
@@ -83,14 +75,16 @@ int createZip(String path, String zipName)
  * Returns 0 if the zip files doesn't exist
  * Returns 1 if it does and is unzipped
  */
-int unzipToDirectory(String zipName, String path)  {
-    if (!fileExists(zipName)){
-        return 0;
-    }
-    String* command = make_empty_String();
-    sprintf(command->str, "unzip %s -d %s > /dev/null", zipName.str, path.str);
-    system(command->str);
-    return 1;
+int unzipToDirectory(String zipName, String path)
+{
+	if (!fileExists(zipName))
+	{
+		return 0;
+	}
+	String *command = make_empty_String();
+	sprintf(command->str, "unzip %s -d %s > /dev/null", zipName.str, path.str);
+	system(command->str);
+	return 1;
 }
 
 /* Creates a folder at path specified
@@ -147,6 +141,10 @@ int countLines(String fileName)
 	return numberOfLines;
 }
 
+/* This function gets the name of the subject you are 
+	currently present in, it really helps in getting subject
+ 	at any point of the program
+*/
 String *getCurrentSubject()
 {
 	String *homePath;
@@ -186,6 +184,10 @@ void enterSubjectDirectory()
 	printf("Enter switch <subject_name> to begin\n");
 }
 
+/* This function checks if the submission folder exists
+	under the assignment folder in the server , if it
+	doesn't exists then creates one else returns back
+*/
 void IFsubmission_folder(String assignment_folder, String *zipfile)
 {
 	String *submission_folder;
@@ -202,30 +204,11 @@ void IFsubmission_folder(String assignment_folder, String *zipfile)
 	}
 }
 
-int zipexists(String folder)
-{
-	DIR *d;
-	struct dirent *dir;
-	d = opendir("../Server");
-
-	if (d)
-	{
-		while ((dir = readdir(d)) != NULL)
-		{
-			if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
-			{
-				if (strcmp(folder.str, dir->d_name) == 0)
-				{
-					return 1;
-				}
-			}
-		}
-
-		closedir(d);
-	}
-	return 0;
-}
-
+/* This function at first checks if the zip file exists in the submissions 
+	folder under assignment folder in respective subject of server, If no 
+	then it simply copies the zip file of assignment into that else 
+	it gives us a prompt to either Overwrite it or Return as it. 
+*/
 int copy_to_server(String *zipfile, String assignment_folder)
 {
 	String *home_path = make_empty_String();
@@ -246,22 +229,23 @@ int copy_to_server(String *zipfile, String assignment_folder)
 	{
 		while (1)
 		{
-			String* prompt = make_empty_String();
+			String *prompt = make_empty_String();
 			printf("\n\tThe zip file already exists!\n\tEnter Overwrite to replace existing file or Return to leave as it is: ");
-            int i = 0;
-            char temp;
-            while (1)
-            {
-                temp = (char)getchar();
-                if (temp != '\n')
-                    prompt->str[i++] = temp;
-                else
-                {
-                    prompt->str[i] = '\0';
-                    break;
-                }
-            }
-
+			int i = 0;
+			char temp;
+			while (1)
+			{
+				temp = (char)getchar();
+				if (temp != '\n')
+					prompt->str[i++] = temp;
+				else
+				{
+					prompt->str[i] = '\0';
+					break;
+				}
+			}
+			
+			// Onselecting "Overwrite", it deletes the previously existing zip fle and copies the new one there
 			if (strcmp(prompt->str, "Overwrite") == 0)
 			{
 				deleteFile(*path);
@@ -271,6 +255,9 @@ int copy_to_server(String *zipfile, String assignment_folder)
 				system(command->str);
 				return 1;
 			}
+			/*On selecting "Return" , it just returns back , keeping the previously
+			  existing folder safe.
+            */
 			else if (strcmp(prompt->str, "Return") == 0)
 			{
 				return 0;
