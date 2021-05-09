@@ -154,31 +154,108 @@ void enterSubjectDirectory()
 	printf("Enter switch <subject_name> to begin\n");
 }
 
-void get_serverpath()
+void IFsubmission_folder(String assignment_folder, String *zipfile)
 {
-	if (isInSubject)
-	{
-		server_path = make_String("../../Server");
-	}
+	String *submission_folder;
 
-	else
+	submission_folder = make_String("../../Server/");
+	submission_folder = attach_String(submission_folder->str, getCurrentSubject()->str);
+	submission_folder = attach_String(submission_folder->str, "/");
+	submission_folder = attach_String(submission_folder->str, assignment_folder.str);
+	submission_folder = attach_String(submission_folder->str, "/submissions");
+
+	if (!folderExists(*submission_folder))
 	{
-		server_path = make_String("../Server");
+		createFolder(*submission_folder);
 	}
 }
 
-int copy_to_server(String *zipfile)
+int zipexists(String folder)
+{
+	DIR *d;
+	struct dirent *dir;
+	d = opendir("../Server");
+
+	if (d)
+	{
+		while ((dir = readdir(d)) != NULL)
+		{
+			if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
+			{
+				if (strcmp(folder.str, dir->d_name) == 0)
+				{
+					return 1;
+				}
+			}
+		}
+
+		closedir(d);
+	}
+	return 0;
+}
+
+int copy_to_server(String *zipfile, String assignment_folder)
 {
 	String *home_path = make_empty_String();
 
 	getcwd(home_path->str, MAX_LEN);
 
-	get_serverpath();
+	String *path = make_empty_String();
+	path->str = "../../Server/";
 
-	String *command = make_empty_String();
+	path = attach_String(path->str, getCurrentSubject()->str);
+	path = attach_String(path->str, "/");
+	path = attach_String(path->str, assignment_folder.str);
+	path = attach_String(path->str, "/submissions/");
 
-	sprintf(command->str, "cp %s %s/%s > /dev/null", zipfile->str, server_path->str, getCurrentSubject()->str);
-	system(command->str);
+	path = attach_String(path->str, zipfile->str);
 
-	return 1;
+	if (fileExists(*zipfile))
+	{
+		while (1)
+		{
+			String* prompt = make_empty_String();
+			printf("\n\tThe zip file already exists!\n\tEnter Overwrite to replace existing file or Return to leave as it is: ");
+            int i = 0;
+            char temp;
+            while (1)
+            {
+                temp = (char)getchar();
+                if (temp != '\n')
+                    prompt->str[i++] = temp;
+                else
+                {
+                    prompt->str[i] = '\0';
+                    break;
+                }
+            }
+
+			if (strcmp(prompt->str, "Overwrite") == 0)
+			{
+				deleteFile(*path);
+				String *command = make_empty_String();
+
+				sprintf(command->str, "cp %s %s > /dev/null", zipfile->str, path->str);
+				system(command->str);
+				return 1;
+			}
+			else if (strcmp(prompt->str, "Return") == 0)
+			{
+				return 0;
+			}
+			else
+			{
+				printf("\n\tWrong Command, please enter again!\n\n");
+			}
+		}
+	}
+	else
+	{
+		String *command = make_empty_String();
+
+		sprintf(command->str, "cp %s %s > /dev/null", zipfile->str, path->str);
+
+		system(command->str);
+		return 1;
+	}
 }
