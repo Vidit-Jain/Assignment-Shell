@@ -1,3 +1,4 @@
+<<<<<<< HEAD:Server/DSA/assignment1/dist/setup.txt
 assignment1
 	This
 	Is

@@ -2,11 +2,18 @@
 #include "processor/prompt.h"
 #include "processor/tokenizer.h"
 #include "utils/files.h"
+#include "commands/execvp.h"
+#include "utils/Subjects.h"
+
 int main()
 {
     start_point = 0;
+    UseCond = 0;
     int i;
+    token_mat a;
     enterSubjectDirectory();
+    Initialize_subject_array();
+
     while (1)
     {
         Initialize();
@@ -15,7 +22,7 @@ int main()
 
         i = 0;
         char temp;
-        Input.str = (char*)malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+        Input.str = (char *)malloc(sizeof(char) * MAX_TOKEN_LENGTH);
         while (1)
         {
             temp = (char)getchar();

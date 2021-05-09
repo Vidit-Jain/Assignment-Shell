@@ -27,4 +27,10 @@ extern String home_path;
 extern String *server_path;
 extern String prev_path;
 
+extern int Server_file_count;
+extern String *Subject_array;
+
+extern int UseCond;
+extern String *UseAssignmentName;
+
 #endif
