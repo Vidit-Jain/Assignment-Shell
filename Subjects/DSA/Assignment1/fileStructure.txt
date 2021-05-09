@@ -1,0 +1,5 @@
+Assignment1/
+	dist/
+		submitter.py
+		setup.txt
+	fileStructure.txt
