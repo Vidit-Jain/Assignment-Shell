@@ -25,10 +25,11 @@ void updateAssignment(String *serverPath,String *assignment)
     }
     else // the assignment exists in the local machine
     {
-        chdir(assignment->str);
         String *get = make_empty_String();
-        sprintf(get->str, "find . -type f -name '*.pdf' > pdfNames.txt");
+        sprintf(get->str, "find %s/ -type f -name '*.pdf' > pdfNames.txt", folder->str);
         system(get->str);
+
+        chdir(assignment->str);
 
         FILE* fp = fopen("pdfNames.txt","r");
         String *dummyString = make_empty_String();
