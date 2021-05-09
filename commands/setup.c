@@ -46,7 +46,7 @@ int* countIndents(String assignmentName, String fileName, int lines) {
 		indentCount[currLine] = noOfTabs(*fileLine);	
 
         // getline comes with the "\n", which we don't want
-        // Last line doesn't have "\n"
+        // Last line doesn't have "\n", so don't try to reduce its length
 		fileLine->length = strlen(fileLine->str);
 		if (currLine + 1 < lines)
             fileLine->str[fileLine->length- 1]  = '\0';
@@ -138,8 +138,8 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
 		if (curr_line + 1 < lines)
             curr->str[curr->length - 1] = '\0';
 
+		// Creates folder of given name at correct level and location
         folderName = attach_String(folderName->str, &(curr->str[indentCount[curr_line]]));
-        
         createFolder(*folderName);
 
 		curr_line++;

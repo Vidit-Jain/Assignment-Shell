@@ -10,26 +10,6 @@ String get_username()
     return username;
 }
 
-String get_machine_name()
-{
-    int fd = open("/proc/sys/kernel/hostname", O_RDONLY);
-    String name;
-    name.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-    getcwd(name.str, MAX_TOKEN_LENGTH);
-    name.length = (int)strlen(name.str);
-    if (fd < 0)
-    {
-        name.length = 11;
-        name.str = "UNK-machine";
-    }
-    else
-    {
-        name.length = read(fd, name.str, 100);
-        name.str[name.length - 1] = 0;
-    }
-    close(fd);
-    return name;
-}
 String get_pwd()
 {
     if (start_point == 0)

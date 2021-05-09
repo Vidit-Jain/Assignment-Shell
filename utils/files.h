@@ -23,7 +23,6 @@ int createFolder(String folder);
 void enterSubjectDirectory();
 
 String *getCurrentSubject();
-void get_serverpath();
 int copy_to_server(String *zipfile, String assignment_folder);
 int zipexists(String folder);
 #endif

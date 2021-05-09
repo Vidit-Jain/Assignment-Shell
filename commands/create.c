@@ -7,10 +7,10 @@
 #include <string.h>
 #include <sys/stat.h>
 
-void createassignment(String *serverpath, String *assignment) {
+void createAssignment(String *serverPath, String *assignment) {
   String *folder;
 
-  folder = attach_String(serverpath->str, "/");
+  folder = attach_String(serverPath->str, "/");
   folder = attach_String(folder->str, assignment->str);
 
   if (!folderExists(*folder))
@@ -45,15 +45,22 @@ void createassignment(String *serverpath, String *assignment) {
 void commandCreate(token_mat args_mat) {
 
   if (args_mat.num_args != 1) {
+
     printf("\n\tInvalid usage of the create command\n\n");
     printf("\tcreate command syntax: create <assignment> \n\n");
+
   } else if (!isInSubject) {
+
     printf("\n\tError: You are not in a Subject yet\n\n");
+
   } else {
+
     String *assignmentName = make_String(args_mat.args[1]);
-    String *currsubj = getCurrentSubject();
-    String *serverpath = make_String("../../Server/");
-    serverpath = attach_String(serverpath->str, currsubj->str);
-    createassignment(serverpath, assignmentName);
+    String *currSubj = getCurrentSubject();
+    String *serverPath = make_String("../../Server/");
+    serverPath = attach_String(serverPath->str, currSubj->str);
+    createAssignment(serverPath, assignmentName);
+
   }
+
 }

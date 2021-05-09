@@ -9,18 +9,24 @@
 
 #define MAX_LEN 2000
 
+// Takes in a path and verifies if such a folder exists
 int folderExists(String path)
 {
 	struct stat sb;
 	return stat(path.str, &sb) == 0 && S_ISDIR(sb.st_mode);
 }
 
+// Takes in a path and verifies if such a file exists
 int fileExists(String path)
 {
 	struct stat sb;
 	return stat(path.str, &sb) == 0 && S_ISREG(sb.st_mode);
 }
 
+/* Deletes the file specified by the path
+ * Returns 0 if it doesn't exist
+ * Returns 1 if it does and deletes the file
+ */
 int deleteFile(String path)
 {
 	if (!fileExists(path))
@@ -33,6 +39,10 @@ int deleteFile(String path)
 	return 1;
 }
 
+/* Deletes the folder specified by the path
+ * Returns 0 if it doesn't exist
+ * Returns 1 if it does and deletes the folder
+ */
 int deleteFolder(String path)
 {
 	if (!folderExists(path))
@@ -53,6 +63,10 @@ String *find_zip(String *file)
 	}
 }
 
+/* Zips a folder specified by path
+ * Returns 0 if the folder doesn't exist
+ * Returns 1 if the folder exists and you create a zip with the name as zipName
+ */
 int createZip(String path, String zipName)
 {
 	if (!folderExists(path))
@@ -64,6 +78,11 @@ int createZip(String path, String zipName)
 	system(command->str);
 	return 1;
 }
+
+/* Unzips a zip file to a path specified
+ * Returns 0 if the zip files doesn't exist
+ * Returns 1 if it does and is unzipped
+ */
 int unzipToDirectory(String zipName, String path)  {
     if (!fileExists(zipName)){
         return 0;
@@ -74,6 +93,10 @@ int unzipToDirectory(String zipName, String path)  {
     return 1;
 }
 
+/* Creates a folder at path specified
+ * Returns 0 if the folder already exists
+ * Else it returns 1 and creates the folder
+ */
 int createFolder(String folder)
 {
 	if (folderExists(folder))
@@ -86,6 +109,11 @@ int createFolder(String folder)
 	system(command->str);
 	return 1;
 }
+/* Uses regex to verify if the given name is a valid file name
+ * We've restricted the file names intentionally, so you might be able to make
+ * file names with some symbols normally but wouldn't pass validFileName as we only want
+ * more standard symbols for files to be permitted
+ */
 int validFileName(String name)
 {
 	String *fileRegex = make_String("[^-_.A-Za-z0-9]");
@@ -95,6 +123,7 @@ int validFileName(String name)
 	return !value;
 }
 
+// Opens a file and returns the number of lines in it, returns -1 if it doesn't exist
 int countLines(String fileName)
 {
 
@@ -117,6 +146,7 @@ int countLines(String fileName)
 
 	return numberOfLines;
 }
+
 String *getCurrentSubject()
 {
 	String *homePath;
@@ -148,6 +178,8 @@ String *getCurrentSubject()
 	strcpy(prev->str, "");
 	return prev;
 }
+
+// Enters the subject directory when you start the shell
 void enterSubjectDirectory()
 {
 	chdir("Subjects");

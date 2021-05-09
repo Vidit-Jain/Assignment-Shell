@@ -1,7 +1,5 @@
 #include "update.h"
 
-
-
 void updateAssignment(String *serverPath,String *assignment)
 {
     int flag = folderExists(*assignment);//checking if the assignment exists in the given subj
@@ -19,14 +17,14 @@ void updateAssignment(String *serverPath,String *assignment)
         {
             //the assignment exists in the server , calling the create function
             printf("\n\tNo such assignment exists on your local machine , Creating it from the server\n\n");
-            createassignment(serverPath,assignment);
+            createAssignment(serverPath,assignment);
         }
 
     }
     else // the assignment exists in the local machine
     {
         String *get = make_empty_String();
-        sprintf(get->str, "find %s/ -type f -name '*.pdf' > pdfNames.txt", folder->str);
+        sprintf(get->str, "find %s/ -type f -name '*.pdf' > %s/pdfNames.txt", folder->str, assignment->str);
         system(get->str);
 
         chdir(assignment->str);
@@ -42,10 +40,11 @@ void updateAssignment(String *serverPath,String *assignment)
         {
             char pdfName[100];
             fscanf(fp, "%s" , pdfName);
-            String *pdfname = make_String(&pdfName[2]); // Deletes all the files before copying over
-            deleteFile(*pdfname);
+            String *pdfString = make_String(&pdfName[2]); // Deletes all the files before copying over
+            deleteFile(*pdfString);
         }
         fclose(fp);
+
         deleteFile(*make_String("pdfNames.txt")); // Remove temporary file created
         deleteFolder(*make_String("dist")); // Delete the dist folder
 
@@ -59,10 +58,12 @@ void updateAssignment(String *serverPath,String *assignment)
                 assignment->str); // finds all the updated pdf files present in server and
         // copies them to assignment
         system(command->str);
+
         sprintf(
                 command->str, "cp -r  %s %s > /dev/null", dist->str,
                 assignment->str); // copies the updated dist folder from server into assignment
         system(command->str);
+
         printf("\n\tAssignment \"%s\" Updated\n\n", assignment->str);
 
     }
@@ -83,10 +84,10 @@ void commandUpdate(token_mat args_mat)
     else
     {
         String *assignmentName = make_String(args_mat.args[1]);
-        String *currsubj = getCurrentSubject();
-        String *serverpath = make_String("../../Server/");
-        serverpath = attach_String(serverpath->str, currsubj->str);
-        updateAssignment(serverpath,assignmentName);
+        String *currSubj = getCurrentSubject();
+        String *serverPath = make_String("../../Server/");
+        serverPath = attach_String(serverPath->str, currSubj->str);
+        updateAssignment(serverPath,assignmentName);
     }
 
 }

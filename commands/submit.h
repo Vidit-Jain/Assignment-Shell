@@ -1,5 +1,5 @@
-#ifndef SUBMIT_H
-#define SUBMIT_H
+#ifndef __SUBMIT_H__
+#define __SUBMIT_H__
 #include <dirent.h>
 #include "../utils/string.h"
 #include "../utils/input_mat.h"

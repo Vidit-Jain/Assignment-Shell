@@ -1,5 +1,5 @@
-#ifndef __UPDATE_H
-#define __UPDATE_H
+#ifndef __UPDATE_H__
+#define __UPDATE_H__
 
 #include "update.h"
 #include "create.h"
