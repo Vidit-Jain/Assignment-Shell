@@ -122,8 +122,10 @@ void compareHash(String file1, String file2) {
         indexAssignment++;
     }
 
-    if (flag) // flag = 1 indicates there was no difference in the files
-        printf("\tThe integrity is maintained\n");
+    if (flag) { // flag = 1 indicates there was no difference in the files
+        String* success = make_String("\tThe integrity is maintained\n");
+        printSuccess(*success);
+    }
 
     printf("\n");
 }

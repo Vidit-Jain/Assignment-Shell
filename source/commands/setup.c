@@ -144,7 +144,8 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
 
 		curr_line++;
 	}
-	printf("\n\tAssignment file structure created\n\n") ;
+	String* success = make_String("\n\tAssignment file structure created\n\n") ;
+    printSuccess(*success);
 }
 
 /* CODE returned by validFileStructure()
@@ -210,7 +211,7 @@ int setupExists(String assignmentName) {
             textFilePath = attach_String(textFilePath->str, "/setup.txt");
             if(!fileExists(*textFilePath)) {
                 String* error = make_empty_String();
-                sprintf(error->str, "\n\tsetup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
+                sprintf(error->str, "\n\tERROR: setup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
                 printError(*error);
                 return 0;
             }

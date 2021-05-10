@@ -8,7 +8,9 @@ void updateUseGlobal()
 
 void useAssignment(String assignmentName) {
     if (!folderExists(assignmentName)) {
-        printf("\n\tAssignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        printError(*error);
         return;
     }
 

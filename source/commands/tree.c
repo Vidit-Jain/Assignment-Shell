@@ -43,7 +43,9 @@ void printTree(String assignmentName) {
 
     // Don't print the tree if the assignment doesn't exist
     if (!folderExists(assignmentName)) {
-        printf("\n\tAssignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        String* error = make_empty_String();
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
+        printError(*error);
     }
     else { // If the assignment exists enter the assignment and recursively print all the files
         String* path = make_String("./");
@@ -57,8 +59,8 @@ void printTree(String assignmentName) {
 
         //Recursively call this function to list all directories and files
         dfsFiles(*path, 1, fp);
-
-        printf("\n\tFile structure stored in fileStructure.txt\n\n");
+        String* success = make_String("\n\tFile structure stored in fileStructure.txt\n\n");
+        printSuccess(*success);
         fclose(fp);
     }
 }

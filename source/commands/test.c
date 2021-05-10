@@ -19,12 +19,12 @@ void test(String folder)
 
     if (!folderExists(folder)) { // checks whether given assignment exists//
         String* error = make_empty_String();
-        sprintf(error->str, "\n\tAssignment \"%s\" doesn't exist\n", folder.str);
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n", folder.str);
         printError(*error);
     }
     else if (!fileExists(*file)) { // checks whether submitter.py exists in assignment//
         String* error = make_empty_String();
-        sprintf(error->str, "\n\tAssignment \"%s\" cannot be tested as it does not contain "
+        sprintf(error->str, "\n\tERROR: Assignment \"%s\" cannot be tested as it does not contain "
                "submitter.py file\n",
                folder.str);
         printError(*error);

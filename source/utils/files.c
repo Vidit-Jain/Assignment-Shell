@@ -14,6 +14,16 @@ void printError(String message) {
     printf("%s", message.str);
     printf("\033[0m");
 }
+void printSuccess(String message) {
+    printf("\033[0;32m");
+    printf("%s", message.str);
+    printf("\033[0m");
+}
+void printWarning(String message) {
+    printf("\033[0;33m");
+    printf("%s", message.str);
+    printf("\033[0m");
+}
 // Takes in a path and verifies if such a folder exists
 int folderExists(String path)
 {

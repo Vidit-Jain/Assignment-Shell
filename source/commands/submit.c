@@ -29,8 +29,11 @@ void userCommandSubmit(String folder)
     // Creates zip
     int successful = createAssignmentZip(folder);
 
-    if (successful)
-        printf("\n\t%s created successfully\n\n", zip_name->str);
+    if (successful) {
+        String* success = make_empty_String();
+        sprintf(success->str, "\n\t%s created successfully\n\n", zip_name->str);
+        printSuccess(*success);
+    }
     else
     {
         String* error = make_empty_String();
@@ -44,7 +47,9 @@ void userCommandSubmit(String folder)
     {
         if (copy_to_server(zip_name, folder))
         {
-            printf("\n\t%s successfully submitted to server\n\n", zip_name->str);
+            String* success = make_empty_String();
+            sprintf(success->str, "\n\t%s successfully submitted to server\n\n", zip_name->str);
+            printSuccess(*success);
         }
         else
         {
@@ -63,7 +68,7 @@ void commandSubmit(token_mat args_mat)
 {
     if (args_mat.num_args != 1)
     {
-        String* error = make_String("\n\tERROR: Invalid usage of the submit command\n\n\tsetup command syntax: setup <assignment>\n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the submit command\n\n\tsubmit command syntax: setup <assignment>\n\n");
         printError(*error);
     }
     else if (!isInSubject)

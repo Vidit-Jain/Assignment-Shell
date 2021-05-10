@@ -39,10 +39,14 @@ void createAssignment(String *serverPath, String *assignment) {
           command->str, "cp -r  %s %s> /dev/null", dist->str,
           assignment->str); // copies dist folder from server into assignment//
       system(command->str);
-      printf("\n\tAssignment \"%s\" created\n\n", assignment->str);
+      String* success = make_empty_String();
+      sprintf(success->str, "\n\tAssignment \"%s\" created\n\n", assignment->str);
+        printSuccess(*success);
     } else {
-      printf("\n\t Assignment \"%s\" created without dist folder\n\n",
+        String* warning =  make_empty_String();
+      sprintf(warning->str, "\n\t Assignment \"%s\" created without dist folder\n\n",
              assignment->str);
+        printWarning(*warning);
     }
   }
 }

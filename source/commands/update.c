@@ -19,7 +19,8 @@ void updateAssignment(String *serverPath,String *assignment)
         else
         {
             //the assignment exists in the server , calling the create function
-            printf("\n\tNo such assignment exists on your local machine, Creating it from the server\n\n");
+            String* warning = make_String("\n\tNo such assignment exists on your local machine, Creating it from the server\n\n");
+            printWarning(*warning);
             createAssignment(serverPath,assignment);
         }
 
@@ -66,9 +67,9 @@ void updateAssignment(String *serverPath,String *assignment)
                 command->str, "cp -r  %s %s > /dev/null", dist->str,
                 assignment->str); // copies the updated dist folder from server into assignment
         system(command->str);
-
-        printf("\n\tAssignment \"%s\" Updated\n\n", assignment->str);
-
+        String* success = make_empty_String();
+        sprintf(success->str, "\n\tAssignment \"%s\" Updated\n\n", assignment->str);
+        printSuccess(*success);
     }
 
 
