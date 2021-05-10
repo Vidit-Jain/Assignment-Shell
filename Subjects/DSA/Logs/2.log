@@ -1,3 +1,0 @@
-[91mThe contents of your root directory are incorrect.[0m
-Found: ['dist']
-Expected: ['analysis', 'dist', 'hash.c', 'hash.h', 'q1', 'q2', 'q3'] + (analysis optional)
