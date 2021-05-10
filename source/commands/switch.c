@@ -50,7 +50,7 @@ void switchSubject(String subject) {
 
 void commandSwitch(token_mat args_mat) {
     if (args_mat.num_args != 1) {
-        String* error = make_String("\n\tERROR: Invalid usage of the switch command\n\n\tswitch command syntax: switch <assignment>\n\n");
+        String* error = make_String("\n\tERROR: Invalid usage of the switch command\n\n\tswitch command syntax: switch <subject>\n\n");
         printError(*error);
     }
     else {
