@@ -4,9 +4,9 @@
 #include "utils/files.h"
 #include "commands/execvp.h"
 #include "utils/Subjects.h"
-
 int main()
 {
+    clearScreen();
     start_point = 0;
     UseCond = 0;
     int i;

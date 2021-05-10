@@ -286,3 +286,7 @@ int copy_to_server(String *zipfile, String assignment_folder)
 	}
 }
 
+void clearScreen() {
+    system("clear");
+}
+
