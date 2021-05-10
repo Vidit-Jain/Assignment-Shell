@@ -260,7 +260,7 @@ int copy_to_server(String *zipfile, String assignment_folder)
 				}
 			}
 			
-			// Onselecting "Overwrite", it deletes the previously existing zip fle and copies the new one there
+			// On selecting "Overwrite", it deletes the previously existing zip fle and copies the new one there
 			if (strcmp(prompt->str, "Overwrite") == 0)
 			{
 				deleteFile(*path);
