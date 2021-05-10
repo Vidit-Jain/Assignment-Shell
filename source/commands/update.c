@@ -45,6 +45,19 @@ void updateAssignment(String *serverPath,String *assignment)
             char pdfName[100];
             fscanf(fp, "%s" , pdfName);
             String *pdfString = make_String(&pdfName[2]); // Deletes all the files before copying over
+            char *token;
+            token = strtok(pdfString->str, "/");
+            char *prev;
+
+            while (token != NULL)
+            {
+                prev = token;
+
+
+                token = strtok(NULL, "/");
+            }
+
+            strcpy(pdfString->str, prev);
             deleteFile(*pdfString);
         }
         fclose(fp);
