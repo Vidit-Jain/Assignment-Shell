@@ -19,6 +19,14 @@ void tokenize_input(String Input)
 
     if (strcmp(token, "quit") == 0) //exit
     {
+        char pet[] = "            ,.  ,.\n            ||  ||\n           ,''--''.\n          : (^)(^) :\n         ,'  -__-  `.\n         :          :\n         :          :\n   -ctr- `._m____m_,' \n";
+        printf(ORANGE);
+        printf("%s", pet);
+        printf(RESET);
+        printf(GREEN);
+        printf("Exiting...\n");
+        printf(RESET);
+        sleep(1);
         exit(0);
     }
     if (strcmp(token, "list") == 0) //rename list to ls
@@ -26,7 +34,7 @@ void tokenize_input(String Input)
         strcpy(token, "ls");
     }
 
-    while (token != NULL)  //store the tokenized string in a token matrix
+    while (token != NULL) //store the tokenized string in a token matrix
     {
         args_mat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
         strcpy(args_mat.args[i], token);
@@ -117,7 +125,8 @@ void execute(token_mat args_mat)
         }
         commandUpdate(args_mat);
     }
-    else if (strcmp(args_mat.args[0], "tree") == 0) {
+    else if (strcmp(args_mat.args[0], "tree") == 0)
+    {
         if (args_mat.num_args == 0 && UseCond == 1)
         {
             args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
@@ -137,7 +146,7 @@ void execute(token_mat args_mat)
     }
     else
     {
-        String* error = make_empty_String();
+        String *error = make_empty_String();
         sprintf(error->str, "\n\tERROR: Invalid command \"%s\"\n\n", args_mat.args[0]);
         printError(*error);
     }

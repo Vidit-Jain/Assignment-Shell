@@ -1,7 +1,0 @@
-Assignment1/
-	abc.pdf
-	dist/
-		submitter.py
-		setup.txt
-	testing.pdf
-	fileStructure.txt
