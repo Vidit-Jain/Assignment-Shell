@@ -16,11 +16,33 @@ void prompt_print() //print the username and subject to give terminal feel
 {
     if (UseCond)
     {
-        printf("<%s:%s/<%s>$ ", get_username().str, getCurrentSubject()->str, UseAssignmentName->str);
+        printf(BLUE);
+        printf("<%s:", get_username().str);
+        printf(RESET);
+        printf(ORANGE);
+        printf("%s", getCurrentSubject()->str);
+        printf(RESET);
+        printf(BLUE);
+        printf("/");
+        printf(RESET);
+        printf(LIGHT_PURPLE);
+        printf("<%s>", UseAssignmentName->str);
+        printf(RESET);
+        printf(BLUE);
+        printf("$ ");
+        printf(RESET);
     }
     else
     {
-        printf("<%s:%s/$ ", get_username().str, getCurrentSubject()->str);
+        printf(BLUE);
+        printf("<%s:", get_username().str);
+        printf(RESET);
+        printf(ORANGE);
+        printf("%s", getCurrentSubject()->str);
+        printf(RESET);
+        printf(BLUE);
+        printf("/$ ");
+        printf(RESET);
     }
 
     fflush(stdout);
