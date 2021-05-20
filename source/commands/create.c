@@ -18,7 +18,7 @@ void createAssignment(String *serverPath, String *assignment) {
       printError(*error);                                                                    // assignment
   }                                                                                         // exists on // server/
   else if (folderExists(*assignment)) {
-      String* error = make_String("\n\tERROR: This assignment was already created\n\n");
+      String* error = make_String("\n\tERROR: This assignment already exists\n\n");
       printError(*error); // checks whether
   }                      // assignment was
                         // already created//

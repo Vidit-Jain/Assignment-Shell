@@ -2,12 +2,12 @@
 
 String get_username()//gets the username
 {
-    String username;
+    String *username = make_empty_String();
     struct passwd *p = getpwuid(getuid());
-    strcpy(username.str, p->pw_name);
-    username.length = strlen(username.str);
+    strcpy(username->str, p->pw_name);
+    username->length = strlen(username->str);
 
-    return username;
+    return *username;
 }
 
 String get_pwd() //gets the machine name but this isnt used

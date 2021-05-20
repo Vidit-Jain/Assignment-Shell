@@ -142,7 +142,9 @@ void execute(token_mat args_mat)
     }
     else if (strcmp(args_mat.args[0], "ls") == 0)
     {
+        printf("\n");
         exec(args_mat);
+        printf("\n");
     }
     else
     {

@@ -5,40 +5,22 @@
 #include "commands/execvp.h"
 #include "utils/Subjects.h"
 
-void status_sleepy()
-{
-    char pet[] = "            ,.  ,.\n            ||  ||\n           ,''--''.\n          : (-)(-) :\n         ,'   --   `.\n         :          :\n         :          :\n   -slp- `._m____m_,' \n";
-    char pet2[] = "            ,.  ,.\n            ||  ||\n           ,''--''.\n          : (o)(o) :\n         ,'   --   `.\n         :          :\n         :          :\n   -slp- `._m____m_,' \n";
-    char pet3[] = "            ,.  ,.\n            ||  ||\n           ,''--''.\n          : (o)(o) :\n         ,'    O   `.\n        :            :\n        :            :\n   -slp- `._m____m_,' \n";
-    system("clear");
-    int i;
-    while (i < 2)
-    {
-        printf(BLUE);
-        printf("%s\n", pet2);
-        usleep(500000);
-        system("clear");
-        printf("%s\n", pet3);
-        usleep(500000);
-        system("clear");
-        printf("%s\n", pet);
-        usleep(10000);
-        system("clear");
-        printf(RESET);
-        i++;
-    }
-}
-
 int main()
 {
-    status_sleepy();
     clearScreen();
     start_point = 0;
     UseCond = 0;
     int i;
-    token_mat a;
+
+    // Creates Subjects folder if it doesn't exist
+    String *subjectString = make_String("Subjects");
+    createFolder(*subjectString);
+
     enterSubjectDirectory();
     Initialize_subject_array();
+    for (int i = 0; i < Server_file_count; i++) {
+        createFolder(Subject_array[i]);
+    }
     while (1)
     {
         Initialize();
