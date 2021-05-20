@@ -1,23 +1,15 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
+#include "processor/input.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
-#include "processor/input.h"
+#include <unistd.h>
 
 #define MAX_NUM_OF_TOKENS 20
 #define MAX_TOKEN_LENGTH 100
-
-typedef struct Pathways Pathways;
-
-struct Pathways
-{
-    char *str;
-    int length;
-};
 
 extern String *subj;
 extern int startPoint;
@@ -28,11 +20,10 @@ extern String *serverPath;
 extern String prevPath;
 
 extern int serverFileCount;
-extern String *subjectArray; //stores all the subject names
+extern String *subjectArray; // stores all the subject names
 
 extern int useCond;
-extern String *useAssignmentName; //stores the Assignment name
-
+extern String *useAssignmentName; // stores the Assignment name
 
 #define BOLD "\033[1m"
 #define NO_BOLD "\033[22m"

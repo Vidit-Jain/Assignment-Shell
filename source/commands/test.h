@@ -1,8 +1,8 @@
 #ifndef __TEST_H__
 #define __TEST_H__
 
-#include "../utils/string.h"
 #include "../utils/inputMat.h"
+#include "../utils/string.h"
 
 void commandTest(tokenMat argsMat);
 

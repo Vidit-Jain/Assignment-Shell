@@ -1,9 +1,9 @@
-#ifndef __EXECVP_H__ 
+#ifndef __EXECVP_H__
 #define __EXECVP_H__
 
-#include "../utils/string.h"
 #include "../globals.h"
 #include "../utils/inputMat.h"
+#include "../utils/string.h"
 
 void exec(tokenMat args_mat);
 

@@ -1,8 +1,8 @@
 #ifndef __STRING_H__
 #define __STRING_H__
 
-#include "../processor/input.h"
 #include "../globals.h"
+#include "../processor/input.h"
 
 // Basic functions
 
@@ -13,7 +13,7 @@ String *makeString(const char *src);
 int compareString(String str1, String str2);
 String eraseString(String x);
 
-// utility function 
+// utility function
 
 String *attachString(char *x, char *y);
 

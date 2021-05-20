@@ -4,15 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
 
 #define LENGTH 1000
 typedef struct String String;
-struct String
-{
-    char *str;
-    int length;
+struct String {
+	char *str;
+	int length;
 };
 
 #endif

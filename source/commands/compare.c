@@ -1,188 +1,217 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
 #include "compare.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 
-/* Creates a list of hashes of each file recursively in the assignment specified and stores it in a
- * file name specified by hashName
- * The files are in sorted order as it makes it easier to compare the hashes later
+/* Creates a list of hashes of each file recursively in the assignment specified
+ * and stores it in a file name specified by hashName The files are in sorted
+ * order as it makes it easier to compare the hashes later
  */
-void folderHash(String assignmentName, String hashName) {
-    String* command = makeEmptyString();
-    sprintf(command->str,"find %s -type f -print0 | sort -z | xargs -r0 md5sum > %s", assignmentName.str, hashName.str);
-    system(command->str);
+void folderHash(String assignmentName, String hashName)
+{
+	String *command = makeEmptyString();
+	sprintf(command->str,
+			"find %s -type f -print0 | sort -z | xargs -r0 md5sum > %s",
+			assignmentName.str, hashName.str);
+	system(command->str);
 }
 
-/* Unzips a zip file into a temporary folder, generates a list of it's hashes and
- * then deletes the temporary folder that was created
+/* Unzips a zip file into a temporary folder, generates a list of it's hashes
+ * and then deletes the temporary folder that was created
  */
-void zipHash(String fileName, String hashName) {
-    unzipToDirectory(fileName, *makeString("TemporaryMD5/"));
-    folderHash(*makeString("TemporaryMD5/"), hashName);
-    deleteFolder(*makeString("TemporaryMD5"));
+void zipHash(String fileName, String hashName)
+{
+	unzipToDirectory(fileName, *makeString("TemporaryMD5/"));
+	folderHash(*makeString("TemporaryMD5/"), hashName);
+	deleteFolder(*makeString("TemporaryMD5"));
 }
 
-/* Goes line by line through both the files at the same time, first compares if the path names
- * are equal.
+/* Goes line by line through both the files at the same time, first compares if
+ * the path names are equal.
  *
- * 1. If they are equal and the hash values are equal, the integrity of that file is maintained.
+ * 1. If they are equal and the hash values are equal, the integrity of that
+ * file is maintained.
  * 2. If they are equal but the hash values aren't, that file has been modified.
- * 3. In case the file in the directory is lexicographically greater than the current file in the zip
- * file, then we know that a file is missing in the directory
- * 4. If the file in the zip is lexicographically greater, we know the zip files is missing some file.
+ * 3. In case the file in the directory is lexicographically greater than the
+ * current file in the zip file, then we know that a file is missing in the
+ * directory
+ * 4. If the file in the zip is lexicographically greater, we know the zip files
+ * is missing some file.
  *
  * In case only case 1 occurs, that means the integrity is maintained
  */
-void compareHash(String file1, String file2) {
-    int assignmentFileLines = countLines(file1);
-    int zipFileLines = countLines(file2);
+void compareHash(String file1, String file2)
+{
+	int assignmentFileLines = countLines(file1);
+	int zipFileLines = countLines(file2);
 
-    FILE* assignmentFileHash = fopen(file1.str, "r");
-    FILE* zipFileHash = fopen(file2.str, "r");
+	FILE *assignmentFileHash = fopen(file1.str, "r");
+	FILE *zipFileHash = fopen(file2.str, "r");
 
-    String* hash1 = makeEmptyString(), *hash2 = makeEmptyString();
-    String* path1 = makeEmptyString(), *path2 = makeEmptyString();
+	String *hash1 = makeEmptyString(), *hash2 = makeEmptyString();
+	String *path1 = makeEmptyString(), *path2 = makeEmptyString();
 
-    int flag = 1;
-    int prefixLength = strlen("TemporaryMD5/"); // Need to skip the prefix of the unzipped folder
+	int flag = 1;
+	int prefixLength = strlen(
+		"TemporaryMD5/"); // Need to skip the prefix of the unzipped folder
 
-    printf("\n"); // Printing a new line so errors can be more visibly distinct
+	printf("\n"); // Printing a new line so errors can be more visibly distinct
 
-    // Taking initial input of file
-    fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
-    fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
+	// Taking initial input of file
+	fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
+	fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
 
-    int indexAssignment = 0, indexZip = 0;
+	int indexAssignment = 0, indexZip = 0;
 
-    while (indexAssignment < assignmentFileLines && indexZip < zipFileLines) {
+	while (indexAssignment < assignmentFileLines && indexZip < zipFileLines) {
 
-        int comparePaths = strcmp(path1->str, &(path2->str[prefixLength]));
+		int comparePaths = strcmp(path1->str, &(path2->str[prefixLength]));
 
-        // If the two files have the same path and name, compare their hash values
-        if (comparePaths == 0) {
+		// If the two files have the same path and name, compare their hash
+		// values
+		if (comparePaths == 0) {
 
-            if (strcmp(hash1->str, hash2->str) != 0) {
-                String* error = makeEmptyString();
-                sprintf(error->str, "\t%s has been modified\n", path1->str);
-                printError(*error);
-                flag = 0;
-            }
+			if (strcmp(hash1->str, hash2->str) != 0) {
+				String *error = makeEmptyString();
+				sprintf(error->str, "\t%s has been modified\n", path1->str);
+				printError(*error);
+				flag = 0;
+			}
 
-            // Increment both lines as they are equal paths
-            fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
-            fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
+			// Increment both lines as they are equal paths
+			fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
+			fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
 
-            indexAssignment++;
-            indexZip++;
-        }
-        else if (comparePaths > 0) {  // Implies a file has been deleted from the directory
-            String* error = makeEmptyString();
-            sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
-            printError(*error);
-            flag = 0; // Integrity is not maintained so we change the flag
+			indexAssignment++;
+			indexZip++;
+		}
+		else if (comparePaths >
+				 0) { // Implies a file has been deleted from the directory
+			String *error = makeEmptyString();
+			sprintf(error->str,
+					"\t%s is in the zip file but not in the directory\n",
+					&(path2->str[prefixLength]));
+			printError(*error);
+			flag = 0; // Integrity is not maintained so we change the flag
 
-            // Increment the lines in the zip file as it's lexicographically behind
-            fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
-            indexZip++;
-        }
-        else { // A new file was added into the directory
-            String* error = makeEmptyString();
-            sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
-            printError(*error);
-            flag = 0; // Integrity is not maintained so we change the flag
+			// Increment the lines in the zip file as it's lexicographically
+			// behind
+			fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
+			indexZip++;
+		}
+		else { // A new file was added into the directory
+			String *error = makeEmptyString();
+			sprintf(error->str,
+					"\t%s is in the directory but not in the zip file\n",
+					path1->str);
+			printError(*error);
+			flag = 0; // Integrity is not maintained so we change the flag
 
-            // Increment the lines in the directory as it's lexicographically behind
-            fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
-            indexAssignment++;
-        }
-    }
+			// Increment the lines in the directory as it's lexicographically
+			// behind
+			fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
+			indexAssignment++;
+		}
+	}
 
-    // Going over the leftover lines in the hash value checklist
-    while (indexZip < zipFileLines) {
-        String* error = makeEmptyString();
-        sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
-        printError(*error);
+	// Going over the leftover lines in the hash value checklist
+	while (indexZip < zipFileLines) {
+		String *error = makeEmptyString();
+		sprintf(error->str,
+				"\t%s is in the zip file but not in the directory\n",
+				&(path2->str[prefixLength]));
+		printError(*error);
 
-        flag = 0;
+		flag = 0;
 
-        fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
-        indexZip++;
-    }
+		fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
+		indexZip++;
+	}
 
-    while (indexAssignment < assignmentFileLines) {
-        String* error = makeEmptyString();
-        sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
-        printError(*error);
+	while (indexAssignment < assignmentFileLines) {
+		String *error = makeEmptyString();
+		sprintf(error->str,
+				"\t%s is in the directory but not in the zip file\n",
+				path1->str);
+		printError(*error);
 
-        flag = 0;
+		flag = 0;
 
-        fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
-        indexAssignment++;
-    }
+		fscanf(assignmentFileHash, "%s %s", hash1->str, path1->str);
+		indexAssignment++;
+	}
 
-    if (flag) { // flag = 1 indicates there was no difference in the files
-        String* success = makeString("\tThe integrity is maintained\n");
-        printSuccess(*success);
-    }
+	if (flag) { // flag = 1 indicates there was no difference in the files
+		String *success = makeString("\tThe integrity is maintained\n");
+		printSuccess(*success);
+	}
 
-    printf("\n");
+	printf("\n");
 }
 
-void verifyIntegrity(String folder, String file) {
+void verifyIntegrity(String folder, String file)
+{
 
-    // Create hashes of the assignment and the zip
-    folderHash(folder, *makeString("checkList.chk"));
-    zipHash(file, *makeString("checkList2.chk"));
+	// Create hashes of the assignment and the zip
+	folderHash(folder, *makeString("checkList.chk"));
+	zipHash(file, *makeString("checkList2.chk"));
 
-    // Compare the hash values and the files
-    compareHash(*makeString("checkList.chk"), *makeString("checkList2.chk"));
+	// Compare the hash values and the files
+	compareHash(*makeString("checkList.chk"), *makeString("checkList2.chk"));
 
-    // Delete the temporary files created
-    deleteFolder(*makeString("TemporaryMD5")); // Created in zipHash when we unzip
-    deleteFile(*makeString("checkList.chk"));
-    deleteFile(*makeString("checkList2.chk"));
+	// Delete the temporary files created
+	deleteFolder(
+		*makeString("TemporaryMD5")); // Created in zipHash when we unzip
+	deleteFile(*makeString("checkList.chk"));
+	deleteFile(*makeString("checkList2.chk"));
 }
 
-void compareAssignment(String folder, String file) {
+void compareAssignment(String folder, String file)
+{
 
-    // Checking if the folder and file exists before verifying integrity
-    int flag = folderExists(folder) && fileExists(file);
+	// Checking if the folder and file exists before verifying integrity
+	int flag = folderExists(folder) && fileExists(file);
 
-    if (!flag) {
-        if (!folderExists(folder)) {
-            String* error = makeEmptyString();
-            sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n", folder.str);
-            printError(*error);
-        }
-        if (!fileExists(file)) {
-            String* error = makeEmptyString();
-            sprintf(error->str,"\n\tERROR: File \"%s\" doesn't exist\n", file.str);
-            printError(*error);
-        }
-        printf("\n");
-    }
-    else {
-        // If they both exist then verify their integrity
-        verifyIntegrity(folder, file);
-    }
+	if (!flag) {
+		if (!folderExists(folder)) {
+			String *error = makeEmptyString();
+			sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n",
+					folder.str);
+			printError(*error);
+		}
+		if (!fileExists(file)) {
+			String *error = makeEmptyString();
+			sprintf(error->str, "\n\tERROR: File \"%s\" doesn't exist\n",
+					file.str);
+			printError(*error);
+		}
+		printf("\n");
+	}
+	else {
+		// If they both exist then verify their integrity
+		verifyIntegrity(folder, file);
+	}
 }
 
-void commandCompare(tokenMat argsMat) {
-    if (argsMat.numArgs != 2) {
-        String* error = makeString(
-                "\n\tERROR: Invalid usage of the compare command\n\n\tcompare command syntax: compare <assignment> <zipfile> \n\n");
-        printError(*error);
-    }
-    else if (!isInSubject) {
-        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
-        printError(*error);
-    }
-    else {
-        String *folder = makeString(argsMat.args[1]);
-        String *file = makeString(argsMat.args[2]);
+void commandCompare(tokenMat argsMat)
+{
+	if (argsMat.numArgs != 2) {
+		String *error = makeString(
+			"\n\tERROR: Invalid usage of the compare command\n\n\tcompare "
+			"command syntax: compare <assignment> <zipfile> \n\n");
+		printError(*error);
+	}
+	else if (!isInSubject) {
+		String *error =
+			makeString("\n\tERROR: You are not in a Subject yet\n\n");
+		printError(*error);
+	}
+	else {
+		String *folder = makeString(argsMat.args[1]);
+		String *file = makeString(argsMat.args[2]);
 
-        compareAssignment(*folder, *file);
-    }
+		compareAssignment(*folder, *file);
+	}
 }
