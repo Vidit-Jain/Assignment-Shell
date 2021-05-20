@@ -3,4 +3,4 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-void Initialize_subject_array();
+void initializeSubjectArray();

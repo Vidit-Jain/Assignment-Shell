@@ -1,13 +1,13 @@
 //used to keep an array of subject names
-#include "Subjects.h"
-void Initialize_subject_array()
+#include "subjects.h"
+void initializeSubjectArray()
 {
 
     DIR *d;
     struct dirent *dir;
     d = opendir("../Server");
 
-    Server_file_count = 0;
+    serverFileCount = 0;
 
     if (d) //gets us the number of subjects
     {
@@ -15,16 +15,16 @@ void Initialize_subject_array()
         {
             if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
             {
-                Server_file_count++;
+                serverFileCount++;
             }
         }
 
         closedir(d);
     }
-    Subject_array = malloc(sizeof(String) * Server_file_count);
-    for (int i = 0; i < Server_file_count; i++)
+    subjectArray = malloc(sizeof(String) * serverFileCount);
+    for (int i = 0; i < serverFileCount; i++)
     {
-        Subject_array[i].str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+        subjectArray[i].str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
     }
     d = opendir("../Server");
 
@@ -35,8 +35,8 @@ void Initialize_subject_array()
         {
             if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0)
             {
-                strcpy(Subject_array[i].str, dir->d_name);  //stores the subject name
-                Subject_array[i].length = strlen(Subject_array[i].str);
+                strcpy(subjectArray[i].str, dir->d_name);  //stores the subject name
+                subjectArray[i].length = strlen(subjectArray[i].str);
 
                 i++;
             }

@@ -17,5 +17,5 @@ struct arg_mat
 
 };
 
-token_mat make_args_mat();
+token_mat makeArgsMat();
 #endif
