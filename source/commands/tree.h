@@ -8,9 +8,9 @@
 
 #include "../utils/string.h"
 #include "../utils/files.h"
-#include "../utils/input_mat.h"
+#include "../utils/inputMat.h"
 
 
-void commandTree(token_mat args_mat);
+void commandTree(tokenMat argsMat);
 
 #endif

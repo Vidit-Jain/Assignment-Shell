@@ -9,31 +9,21 @@
 #include "../commands/use.h"
 #include "../commands/update.h"
 #include "../commands/tree.h"
-void tokenize_input(String Input)
+void tokenizeInput(String Input)
 {
-    token_mat args_mat;
-    args_mat = make_args_mat();
+    tokenMat args_mat;
+    args_mat = makeArgsMat();
     char *token;
     token = strtok(Input.str, " "); //tokenize the input string
     int i = 0;
 
-    if (strcmp(token, "quit") == 0) //exit
-    {
-        char pet[] = "            ,.  ,.\n            ||  ||\n           ,''--''.\n          : (^)(^) :\n         ,'  -__-  `.\n         :          :\n         :          :\n   -ctr- `._m____m_,' \n";
-        printf(ORANGE);
-        printf("%s", pet);
-        printf(RESET);
-        printf(GREEN);
-        printf("Exiting...\n");
-        printf(RESET);
-        sleep(1);
-        exit(0);
-    }
     if (strcmp(token, "list") == 0) //rename list to ls
     {
         strcpy(token, "ls");
     }
-
+	if (strcmp(token,"quit") == 0) {
+		exit(0);
+	}
     while (token != NULL) //store the tokenized string in a token matrix
     {
         args_mat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
@@ -41,115 +31,115 @@ void tokenize_input(String Input)
         token = strtok(NULL, " ");
         i++;
     }
-    args_mat.num_args = i - 1; //number of arguments to a command
+    args_mat.numArgs = i - 1; //number of arguments to a command
     args_mat.args[i] = token;
     execute(args_mat); //send it to the required command
 }
 
-void execute(token_mat args_mat)
+void execute(tokenMat argsMat)
 {
-    if (strcmp(args_mat.args[0], "switch") == 0)
+    if (strcmp(argsMat.args[0], "switch") == 0)
     {
-        commandSwitch(args_mat);
+        commandSwitch(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "compare") == 0)
+    else if (strcmp(argsMat.args[0], "compare") == 0)
     {
-        if (args_mat.num_args == 1 && UseCond == 1)
+        if (argsMat.numArgs == 1 && useCond == 1)
         {
-            args_mat.args[2] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[2], args_mat.args[1]);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[3] = NULL;
-            args_mat.num_args++;
+            argsMat.args[2] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[2], argsMat.args[1]);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[3] = NULL;
+            argsMat.numArgs++;
         }
 
-        commandCompare(args_mat);
+        commandCompare(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "test") == 0)
+    else if (strcmp(argsMat.args[0], "test") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
         }
 
-        commandTest(args_mat);
+        commandTest(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "setup") == 0)
+    else if (strcmp(argsMat.args[0], "setup") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
         }
 
-        commandSetup(args_mat);
+        commandSetup(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "submit") == 0)
+    else if (strcmp(argsMat.args[0], "submit") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
         }
 
-        commandSubmit(args_mat);
+        commandSubmit(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "create") == 0)
+    else if (strcmp(argsMat.args[0], "create") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
             //This was intentional
         }
 
-        commandCreate(args_mat);
+        commandCreate(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "update") == 0)
+    else if (strcmp(argsMat.args[0], "update") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
         }
-        commandUpdate(args_mat);
+        commandUpdate(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "tree") == 0)
+    else if (strcmp(argsMat.args[0], "tree") == 0)
     {
-        if (args_mat.num_args == 0 && UseCond == 1)
+        if (argsMat.numArgs == 0 && useCond == 1)
         {
-            args_mat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-            strcpy(args_mat.args[1], UseAssignmentName->str);
-            args_mat.args[2] = NULL;
-            args_mat.num_args++;
+            argsMat.args[1] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+            strcpy(argsMat.args[1], useAssignmentName->str);
+            argsMat.args[2] = NULL;
+            argsMat.numArgs++;
         }
-        commandTree(args_mat);
+        commandTree(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "use") == 0)
+    else if (strcmp(argsMat.args[0], "use") == 0)
     {
-        commandUse(args_mat);
+        commandUse(argsMat);
     }
-    else if (strcmp(args_mat.args[0], "ls") == 0)
+    else if (strcmp(argsMat.args[0], "ls") == 0)
     {
         printf("\n");
-        exec(args_mat);
+        exec(argsMat);
         printf("\n");
     }
     else
     {
-        String *error = make_empty_String();
-        sprintf(error->str, "\n\tERROR: Invalid command \"%s\"\n\n", args_mat.args[0]);
+        String *error = makeEmptyString();
+        sprintf(error->str, "\n\tERROR: Invalid command \"%s\"\n\n", argsMat.args[0]);
         printError(*error);
     }
 }

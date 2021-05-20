@@ -20,7 +20,7 @@ without any wrong syntax
 */
 void userCommandSubmit(String folder)
 {
-    String *zip_name = make_empty_String();
+    String *zip_name = makeEmptyString();
 
     // Deleting zip if it exists
     sprintf(zip_name->str, "%s.zip", folder.str);
@@ -30,30 +30,30 @@ void userCommandSubmit(String folder)
     int successful = createAssignmentZip(folder);
 
     if (successful) {
-        String* success = make_empty_String();
+        String* success = makeEmptyString();
         sprintf(success->str, "\n\t%s created successfully\n\n", zip_name->str);
         printSuccess(*success);
     }
     else
     {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", folder.str);
         printError(*error);
     }
 
-    IFsubmission_folder(folder, zip_name);
+    ifSubmissionFolder(folder, zip_name);
 
     if (successful)
     {
-        if (copy_to_server(zip_name, folder))
+        if (copyToServer(zip_name, folder))
         {
-            String* success = make_empty_String();
+            String* success = makeEmptyString();
             sprintf(success->str, "\n\t%s successfully submitted to server\n\n", zip_name->str);
             printSuccess(*success);
         }
         else
         {
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str, "\n\tERROR: %s wasn't copied due to duplicate\n\n", zip_name->str);
             printError(*error);
         }
@@ -64,21 +64,22 @@ void userCommandSubmit(String folder)
 provided to it and it checks edge cases and then only send the input
 further to main submit function which does its operation as defined
 */
-void commandSubmit(token_mat args_mat)
+void commandSubmit(tokenMat argsMat)
 {
-    if (args_mat.num_args != 1)
+    if (argsMat.numArgs != 1)
     {
-        String* error = make_String("\n\tERROR: Invalid usage of the submit command\n\n\tsubmit command syntax: setup <assignment>\n\n");
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the submit command\n\n\tsubmit command syntax: setup <assignment>\n\n");
         printError(*error);
     }
     else if (!isInSubject)
     {
-        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
         printError(*error);
     }
     else
     {
-        String *fileName = make_String(args_mat.args[1]);
+        String *fileName = makeString(argsMat.args[1]);
         userCommandSubmit(*fileName);
     }
 }

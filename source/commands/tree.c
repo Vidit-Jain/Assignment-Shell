@@ -24,7 +24,7 @@ void dfsFiles(String path, int tabs, FILE* fp) {
         fprintf(fp,"%s", de->d_name);
 
         // Creating a path to the current file we're on to check if it's a directory or not
-        String* a = make_String(path.str);
+        String* a = makeString(path.str);
         strcat(a->str, "/");
         strcat(a->str, de->d_name);
 
@@ -43,15 +43,15 @@ void printTree(String assignmentName) {
 
     // Don't print the tree if the assignment doesn't exist
     if (!folderExists(assignmentName)) {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
         printError(*error);
     }
     else { // If the assignment exists enter the assignment and recursively print all the files
-        String* path = make_String("./");
-        path = attach_String(path->str, assignmentName.str);
-        String* fileStructure = make_String(path->str);
-        fileStructure = attach_String(fileStructure->str, "/fileStructure.txt");
+        String* path = makeString("./");
+        path = attachString(path->str, assignmentName.str);
+        String* fileStructure = makeString(path->str);
+        fileStructure = attachString(fileStructure->str, "/fileStructure.txt");
         FILE* fp = fopen(fileStructure->str, "w");
 
         //Print the assignment name as the parent directory
@@ -59,24 +59,25 @@ void printTree(String assignmentName) {
 
         //Recursively call this function to list all directories and files
         dfsFiles(*path, 1, fp);
-        String* success = make_String("\n\tFile structure stored in fileStructure.txt\n\n");
+        String* success = makeString("\n\tFile structure stored in fileStructure.txt\n\n");
         printSuccess(*success);
         fclose(fp);
     }
 }
 
-void commandTree(token_mat args_mat) {
+void commandTree(tokenMat argsMat) {
 
-    if (args_mat.num_args != 1) {
-        String* error = make_String("\n\tERROR: Invalid usage of the tree command\n\n\ttree command syntax: tree <assignment>\n\n");
+    if (argsMat.numArgs != 1) {
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the tree command\n\n\ttree command syntax: tree <assignment>\n\n");
         printError(*error);
     }
     else if(!isInSubject) {
-        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
         printError(*error);
     }
     else {
-        String* assignmentName = make_String(args_mat.args[1]);
+        String* assignmentName = makeString(argsMat.args[1]);
         printTree(*assignmentName);
     }
 

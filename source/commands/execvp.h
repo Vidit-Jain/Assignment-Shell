@@ -3,8 +3,8 @@
 
 #include "../utils/string.h"
 #include "../globals.h"
-#include "../utils/input_mat.h"
+#include "../utils/inputMat.h"
 
-void exec(token_mat args_mat);
+void exec(tokenMat args_mat);
 
 #endif

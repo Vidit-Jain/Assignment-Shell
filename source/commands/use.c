@@ -3,36 +3,37 @@
 
 void updateUseGlobal()
 {
-    UseCond = 1;
+    useCond = 1;
 }
 
 void useAssignment(String assignmentName) {
     if (!folderExists(assignmentName)) {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
         printError(*error);
         return;
     }
 
     // Assigns the assignment name to the global variable
-    UseAssignmentName = make_String(assignmentName.str);
-    UseAssignmentName->length = strlen(UseAssignmentName->str);
+    useAssignmentName = makeString(assignmentName.str);
+    useAssignmentName->length = strlen(useAssignmentName->str);
 
     updateUseGlobal(); //updates global variable to be able to use the USE function
 }
 
-void commandUse(token_mat args_mat)
+void commandUse(tokenMat argsMat)
 {
-    if (args_mat.num_args != 1) {
-        String* error = make_String("\n\tERROR: Invalid usage of the use command\n\n\tuse command syntax: use <assignment> \n\n");
+    if (argsMat.numArgs != 1) {
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the use command\n\n\tuse command syntax: use <assignment> \n\n");
         printError(*error);
     }
     else if (!isInSubject) {
-        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
         printError(*error);
     }
     else {
-        String* assignmentName = make_String(args_mat.args[1]);
+        String* assignmentName = makeString(argsMat.args[1]);
         useAssignment(*assignmentName);
     }
 }

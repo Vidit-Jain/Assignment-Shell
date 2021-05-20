@@ -11,9 +11,8 @@
 #include "../globals.h"
 #include "../processor/input.h"
 
-String get_username();
-String get_machine_name();
-String get_pwd();
-void out_pwd();
+String getUsername();
+String getPwd();
+void outPwd();
 
 #endif

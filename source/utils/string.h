@@ -6,15 +6,15 @@
 
 // Basic functions
 
-String *make_empty_String();
-String *copy_String(String *dest, String *src);
-String *break_String(String src, int break_len);
-String *make_String(const char src[]); 
-int compare_String(String str1, String str2);
-String erase_String(String x);
+String *makeEmptyString();
+String *copyString(String *dest, String *src);
+String *breakString(String src, int break_len);
+String *makeString(const char *src);
+int compareString(String str1, String str2);
+String eraseString(String x);
 
 // utility function 
 
-String *attach_String(char x[], char y[]);
+String *attachString(char *x, char *y);
 
 #endif

@@ -8,14 +8,14 @@
 #include <sys/stat.h>
 #include "../globals.h"
 
-typedef struct arg_mat token_mat;
+typedef struct argMat tokenMat;
 
-struct arg_mat
+struct argMat
 {
     char **args;
-    int num_args;
+    int numArgs;
 
 };
 
-token_mat makeArgsMat();
+tokenMat makeArgsMat();
 #endif

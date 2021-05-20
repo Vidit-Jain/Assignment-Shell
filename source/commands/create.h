@@ -8,6 +8,6 @@
 #include <string.h>
 #include <sys/stat.h>
 
-void commandCreate(token_mat args_mat);
+void commandCreate(tokenMat argsMat);
 void createAssignment(String *serverPath, String *assignment);
 #endif

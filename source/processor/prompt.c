@@ -1,23 +1,23 @@
 #include "prompt.h"
 #include "../globals.h"
 #include "../utils/files.h"
-void Initialize() //initialize the home_path and prev_path
+void initialize() //initialize the home_path and prev_path
 {
-    home_path.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-    getcwd(home_path.str, MAX_TOKEN_LENGTH);
-    home_path.length = strlen(home_path.str);
+    homePath.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+    getcwd(homePath.str, MAX_TOKEN_LENGTH);
+    homePath.length = strlen(homePath.str);
 
-    prev_path.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-    getcwd(prev_path.str, MAX_TOKEN_LENGTH);
-    prev_path.length = strlen(prev_path.str);
+    prevPath.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+    getcwd(prevPath.str, MAX_TOKEN_LENGTH);
+    prevPath.length = strlen(prevPath.str);
 }
 
 void prompt_print() //print the username and subject to give terminal feel
 {
-    if (UseCond)
+    if (useCond)
     {
         printf(BLUE);
-        printf("<%s:", get_username().str);
+        printf("<%s:", getUsername().str);
         printf(RESET);
         printf(ORANGE);
         printf("%s", getCurrentSubject()->str);
@@ -26,7 +26,7 @@ void prompt_print() //print the username and subject to give terminal feel
         printf("/");
         printf(RESET);
         printf(LIGHT_PURPLE);
-        printf("<%s>", UseAssignmentName->str);
+        printf("<%s>", useAssignmentName->str);
         printf(RESET);
         printf(BLUE);
         printf("$ ");
@@ -35,7 +35,7 @@ void prompt_print() //print the username and subject to give terminal feel
     else
     {
         printf(BLUE);
-        printf("<%s:", get_username().str);
+        printf("<%s:", getUsername().str);
         printf(RESET);
         printf(ORANGE);
         printf("%s", getCurrentSubject()->str);

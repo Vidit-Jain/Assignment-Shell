@@ -10,7 +10,7 @@
  * The files are in sorted order as it makes it easier to compare the hashes later
  */
 void folderHash(String assignmentName, String hashName) {
-    String* command = make_empty_String();
+    String* command = makeEmptyString();
     sprintf(command->str,"find %s -type f -print0 | sort -z | xargs -r0 md5sum > %s", assignmentName.str, hashName.str);
     system(command->str);
 }
@@ -19,9 +19,9 @@ void folderHash(String assignmentName, String hashName) {
  * then deletes the temporary folder that was created
  */
 void zipHash(String fileName, String hashName) {
-    unzipToDirectory(fileName, *make_String("TemporaryMD5/"));
-    folderHash(*make_String("TemporaryMD5/"), hashName);
-    deleteFolder(*make_String("TemporaryMD5"));
+    unzipToDirectory(fileName, *makeString("TemporaryMD5/"));
+    folderHash(*makeString("TemporaryMD5/"), hashName);
+    deleteFolder(*makeString("TemporaryMD5"));
 }
 
 /* Goes line by line through both the files at the same time, first compares if the path names
@@ -42,8 +42,8 @@ void compareHash(String file1, String file2) {
     FILE* assignmentFileHash = fopen(file1.str, "r");
     FILE* zipFileHash = fopen(file2.str, "r");
 
-    String* hash1 = make_empty_String(), *hash2 = make_empty_String();
-    String* path1 = make_empty_String(), *path2 = make_empty_String();
+    String* hash1 = makeEmptyString(), *hash2 = makeEmptyString();
+    String* path1 = makeEmptyString(), *path2 = makeEmptyString();
 
     int flag = 1;
     int prefixLength = strlen("TemporaryMD5/"); // Need to skip the prefix of the unzipped folder
@@ -64,7 +64,7 @@ void compareHash(String file1, String file2) {
         if (comparePaths == 0) {
 
             if (strcmp(hash1->str, hash2->str) != 0) {
-                String* error = make_empty_String();
+                String* error = makeEmptyString();
                 sprintf(error->str, "\t%s has been modified\n", path1->str);
                 printError(*error);
                 flag = 0;
@@ -78,7 +78,7 @@ void compareHash(String file1, String file2) {
             indexZip++;
         }
         else if (comparePaths > 0) {  // Implies a file has been deleted from the directory
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
             printError(*error);
             flag = 0; // Integrity is not maintained so we change the flag
@@ -88,7 +88,7 @@ void compareHash(String file1, String file2) {
             indexZip++;
         }
         else { // A new file was added into the directory
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
             printError(*error);
             flag = 0; // Integrity is not maintained so we change the flag
@@ -101,7 +101,7 @@ void compareHash(String file1, String file2) {
 
     // Going over the leftover lines in the hash value checklist
     while (indexZip < zipFileLines) {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str,"\t%s is in the zip file but not in the directory\n", &(path2->str[prefixLength]));
         printError(*error);
 
@@ -112,7 +112,7 @@ void compareHash(String file1, String file2) {
     }
 
     while (indexAssignment < assignmentFileLines) {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str,"\t%s is in the directory but not in the zip file\n", path1->str);
         printError(*error);
 
@@ -123,7 +123,7 @@ void compareHash(String file1, String file2) {
     }
 
     if (flag) { // flag = 1 indicates there was no difference in the files
-        String* success = make_String("\tThe integrity is maintained\n");
+        String* success = makeString("\tThe integrity is maintained\n");
         printSuccess(*success);
     }
 
@@ -133,16 +133,16 @@ void compareHash(String file1, String file2) {
 void verifyIntegrity(String folder, String file) {
 
     // Create hashes of the assignment and the zip
-    folderHash(folder, *make_String("checkList.chk"));
-    zipHash(file, *make_String("checkList2.chk"));
+    folderHash(folder, *makeString("checkList.chk"));
+    zipHash(file, *makeString("checkList2.chk"));
 
     // Compare the hash values and the files
-    compareHash(*make_String("checkList.chk"), *make_String("checkList2.chk"));
+    compareHash(*makeString("checkList.chk"), *makeString("checkList2.chk"));
 
     // Delete the temporary files created
-    deleteFolder(*make_String("TemporaryMD5")); // Created in zipHash when we unzip
-    deleteFile(*make_String("checkList.chk"));
-    deleteFile(*make_String("checkList2.chk"));
+    deleteFolder(*makeString("TemporaryMD5")); // Created in zipHash when we unzip
+    deleteFile(*makeString("checkList.chk"));
+    deleteFile(*makeString("checkList2.chk"));
 }
 
 void compareAssignment(String folder, String file) {
@@ -152,12 +152,12 @@ void compareAssignment(String folder, String file) {
 
     if (!flag) {
         if (!folderExists(folder)) {
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n", folder.str);
             printError(*error);
         }
         if (!fileExists(file)) {
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str,"\n\tERROR: File \"%s\" doesn't exist\n", file.str);
             printError(*error);
         }
@@ -169,18 +169,19 @@ void compareAssignment(String folder, String file) {
     }
 }
 
-void commandCompare(token_mat args_mat) {
-    if (args_mat.num_args != 2) {
-        String* error = make_String("\n\tERROR: Invalid usage of the compare command\n\n\tcompare command syntax: compare <assignment> <zipfile> \n\n");
+void commandCompare(tokenMat argsMat) {
+    if (argsMat.numArgs != 2) {
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the compare command\n\n\tcompare command syntax: compare <assignment> <zipfile> \n\n");
         printError(*error);
     }
     else if (!isInSubject) {
-        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
         printError(*error);
     }
     else {
-        String *folder = make_String(args_mat.args[1]);
-        String *file = make_String(args_mat.args[2]);
+        String *folder = makeString(argsMat.args[1]);
+        String *file = makeString(argsMat.args[2]);
 
         compareAssignment(*folder, *file);
     }

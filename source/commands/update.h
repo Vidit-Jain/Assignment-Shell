@@ -10,6 +10,6 @@
 #include <string.h>
 #include <sys/stat.h>
 
-void commandUpdate(token_mat args_mat);
+void commandUpdate(tokenMat argsMat);
 
 #endif

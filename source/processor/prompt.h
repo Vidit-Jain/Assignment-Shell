@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 
-void Initialize();
+void initialize();
 void prompt_print();
 
 #endif

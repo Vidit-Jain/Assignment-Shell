@@ -31,7 +31,7 @@ int* countIndents(String assignmentName, String fileName, int lines) {
 
 	int* indentCount = (int*)calloc(sizeof(int), lines);
 
-    String* fileLine = make_empty_String();
+    String* fileLine = makeEmptyString();
 	size_t lineLength = 0;
 	ssize_t fileRead;
 
@@ -49,7 +49,7 @@ int* countIndents(String assignmentName, String fileName, int lines) {
         fileLine->str[fileLine->length- 1]  = '\0';
 
         // Skipping the indents in the String to make the folder name
-        String* folderName =  make_String(&(fileLine->str[indentCount[currLine]]));
+        String* folderName = makeString(&(fileLine->str[indentCount[currLine]]));
 
         // Checks if the first folder of the setup corresponds to the assignment we're in
         if (firstLine && strcmp(folderName->str, assignmentName.str) != 0) {
@@ -74,16 +74,16 @@ int* countIndents(String assignmentName, String fileName, int lines) {
 	return indentCount;
 }
 void createFileStructure(String fileName,int* indentCount, int lines) {
-    String* directory = make_String(".");
+    String* directory = makeString(".");
 	int curr_indent = 0;
 	
-    String* fileLine = make_empty_String();
+    String* fileLine = makeEmptyString();
 	size_t lineLength = 0;
 	ssize_t fileRead;
 	int curr_line = 0;
 	FILE* fp = fopen(fileName.str, "r");
-    String* prev = make_empty_String();
-    String* curr = make_empty_String();
+    String* prev = makeEmptyString();
+    String* curr = makeEmptyString();
 
 	while ((fileRead = getline(&(fileLine->str), &lineLength, fp)) != -1) {
 
@@ -96,9 +96,9 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
          * current directory.
          */
 		if (indentCount[curr_line] > curr_indent) {
-            directory = attach_String(directory->str, "/");
+            directory = attachString(directory->str, "/");
             char *previousDirectory = &(prev->str[indentCount[curr_line-1]]);
-            directory = attach_String(directory->str, previousDirectory);
+            directory = attachString(directory->str, previousDirectory);
 			curr_indent++;
 		}
         /* If you're going some levels outside of the current directory
@@ -124,11 +124,11 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
          */
         directory->length = strlen(directory->str);
 
-        String* folderName = make_empty_String();
+        String* folderName = makeEmptyString();
         folderName->str[0] = '\0';
-        folderName = copy_String(folderName, directory);
+        folderName = copyString(folderName, directory);
         strcpy(folderName->str, directory->str);
-        folderName = attach_String(folderName->str, "/");
+        folderName = attachString(folderName->str, "/");
 
 		curr->length = strlen(curr->str);
 
@@ -138,12 +138,12 @@ void createFileStructure(String fileName,int* indentCount, int lines) {
             curr->str[curr->length - 1] = '\0';
 
 		// Creates folder of given name at correct level and location
-        folderName = attach_String(folderName->str, &(curr->str[indentCount[curr_line]]));
+        folderName = attachString(folderName->str, &(curr->str[indentCount[curr_line]]));
         createFolder(*folderName);
 
 		curr_line++;
 	}
-	String* success = make_String("\n\tAssignment file structure created\n\n") ;
+	String* success = makeString("\n\tAssignment file structure created\n\n") ;
     printSuccess(*success);
 }
 
@@ -178,7 +178,7 @@ int validFileStructure(int* arr, int lines) {
 }
 // Returns the path to the setup.txt file in the assignment
 String* fileInAssignment(String assignment) {
-    String* setupFile = make_empty_String();
+    String* setupFile = makeEmptyString();
     sprintf(setupFile->str, "%s/dist/setup.txt", assignment.str);
     return setupFile;
 }
@@ -190,26 +190,26 @@ String* fileInAssignment(String assignment) {
  * Else we return 1 to indicate that the file does exist
  */
 int setupExists(String assignmentName) {
-    String* textFilePath = make_String(assignmentName.str);
+    String* textFilePath = makeString(assignmentName.str);
 
     if (!folderExists(*textFilePath)) {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n", assignmentName.str);
         printError(*error);
         return 0;
     }
     else {
-        textFilePath = attach_String(textFilePath->str, "/dist");
+        textFilePath = attachString(textFilePath->str, "/dist");
         if (!folderExists(*textFilePath)) {
-            String* error = make_empty_String();
+            String* error = makeEmptyString();
             sprintf(error->str, "\n\tERROR: The dist folder doesn't exist in \"%s\"\n\n", assignmentName.str);
             printError(*error);
             return 0;
         }
         else {
-            textFilePath = attach_String(textFilePath->str, "/setup.txt");
+            textFilePath = attachString(textFilePath->str, "/setup.txt");
             if(!fileExists(*textFilePath)) {
-                String* error = make_empty_String();
+                String* error = makeEmptyString();
                 sprintf(error->str, "\n\tERROR: setup.txt doesn't exist in \"%s\"\n\n", assignmentName.str);
                 printError(*error);
                 return 0;
@@ -228,7 +228,7 @@ void setup(String assignmentName) {
 	int lines = countLines(textFilePath);
 	int* indentCount = countIndents(assignmentName,textFilePath, lines);
 	int code = validFileStructure(indentCount, lines);
-    String* error = make_empty_String();
+    String* error = makeEmptyString();
 	if (code == 5) {
         sprintf(error->str, "\n\tERROR: Wrong assignment name in setup.txt file\n\n");
         printError(*error);
@@ -258,17 +258,18 @@ void setup(String assignmentName) {
 
 }
 
-void commandSetup(token_mat args_mat) {
-    if (args_mat.num_args != 1) {
-        String* error = make_String("\n\tERROR: Invalid usage of the setup command\n\n\tsetup command syntax: setup <assignment>\n\n");
+void commandSetup(tokenMat argsMat) {
+    if (argsMat.numArgs != 1) {
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the setup command\n\n\tsetup command syntax: setup <assignment>\n\n");
         printError(*error);
     }
     else if (!isInSubject) {
-        String* error = make_String("\n\tERROR: You are not in a Subject yet\n\n");
+        String* error = makeString("\n\tERROR: You are not in a Subject yet\n\n");
         printError(*error);
     }
     else {
-        String *fileName = make_String(args_mat.args[1]);
+        String *fileName = makeString(argsMat.args[1]);
         setup(*fileName);
     }
 }

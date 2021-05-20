@@ -1,17 +1,17 @@
 #include "globals.h"
 
 String *subj;
-int start_point;
+int startPoint;
 int isInSubject;
 
-String home_path;
-String* server_path;
-String prev_path;
+String homePath;
+String* serverPath;
+String prevPath;
 
-int Server_file_count;
-String *Subject_array;
+int serverFileCount;
+String *subjectArray;
 
-int UseCond;
-String *UseAssignmentName;
+int useCond;
+String *useAssignmentName;
 
 

@@ -20,18 +20,18 @@ struct Pathways
 };
 
 extern String *subj;
-extern int start_point;
+extern int startPoint;
 extern int isInSubject;
 
-extern String home_path;
-extern String *server_path;
-extern String prev_path;
+extern String homePath;
+extern String *serverPath;
+extern String prevPath;
 
-extern int Server_file_count;
-extern String *Subject_array; //stores all the subject names
+extern int serverFileCount;
+extern String *subjectArray; //stores all the subject names
 
-extern int UseCond;
-extern String *UseAssignmentName; //stores the Assignment name
+extern int useCond;
+extern String *useAssignmentName; //stores the Assignment name
 
 
 #define BOLD "\033[1m"

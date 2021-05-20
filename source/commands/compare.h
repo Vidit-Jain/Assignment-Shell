@@ -2,7 +2,7 @@
 #define __COMPARE_H__
 
 #include "../utils/string.h"    
-#include "../utils/input_mat.h"
+#include "../utils/inputMat.h"
 
-void commandCompare(token_mat args_mat);
+void commandCompare(tokenMat argsMat);
 #endif

@@ -11,13 +11,13 @@
 
 #define MAX_LEN 2000
 void exitCurrentDirectory() {
-    String* dots = make_String("..");
+    String* dots = makeString("..");
     chdir(dots->str);
 }
 
 void switchSubject(String subject) {
     String *homePath;
-    homePath = make_empty_String();
+    homePath = makeEmptyString();
 
     getcwd(homePath->str, MAX_LEN);
     int strLen = strlen(homePath->str);
@@ -32,7 +32,7 @@ void switchSubject(String subject) {
 
     if (!flag)
     {
-        String* error = make_empty_String();
+        String* error = makeEmptyString();
         sprintf(error->str, "\n\tERROR: Subject \"%s\" doesn't exist\n\n", subject.str);
         printError(*error);
         if(isInSubject == 1) chdir(currentSubject->str);
@@ -48,13 +48,14 @@ void switchSubject(String subject) {
     return;
 }
 
-void commandSwitch(token_mat args_mat) {
-    if (args_mat.num_args != 1) {
-        String* error = make_String("\n\tERROR: Invalid usage of the switch command\n\n\tswitch command syntax: switch <subject>\n\n");
+void commandSwitch(tokenMat argsMat) {
+    if (argsMat.numArgs != 1) {
+        String* error = makeString(
+                "\n\tERROR: Invalid usage of the switch command\n\n\tswitch command syntax: switch <subject>\n\n");
         printError(*error);
     }
     else {
-        String *subjectName = make_String(args_mat.args[1]);
+        String *subjectName = makeString(argsMat.args[1]);
         switchSubject(*subjectName);
     }
 }

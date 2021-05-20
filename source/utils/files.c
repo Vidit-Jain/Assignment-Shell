@@ -48,7 +48,7 @@ int deleteFile(String path)
 	{
 		return 0;
 	}
-	String *command = make_empty_String();
+	String *command = makeEmptyString();
 	sprintf(command->str, "rm %s > /dev/null", path.str);
 	system(command->str);
 	return 1;
@@ -64,7 +64,7 @@ int deleteFolder(String path)
 	{
 		return 0;
 	}
-	String *command = make_empty_String();
+	String *command = makeEmptyString();
 	sprintf(command->str, "rm -r %s > /dev/null", path.str);
 	system(command->str);
 	return 1;
@@ -80,7 +80,7 @@ int createZip(String path, String zipName)
 	{
 		return 0;
 	}
-	String *command = make_empty_String();
+	String *command = makeEmptyString();
 	sprintf(command->str, "zip -r %s.zip %s > /dev/null", zipName.str, path.str);
 	system(command->str);
 	return 1;
@@ -96,7 +96,7 @@ int unzipToDirectory(String zipName, String path)
 	{
 		return 0;
 	}
-	String *command = make_empty_String();
+	String *command = makeEmptyString();
 	sprintf(command->str, "unzip %s -d %s > /dev/null", zipName.str, path.str);
 	system(command->str);
 	return 1;
@@ -113,7 +113,7 @@ int createFolder(String folder)
 		return 0;
 	}
 
-	String *command = make_empty_String();
+	String *command = makeEmptyString();
 	sprintf(command->str, "mkdir %s > /dev/null", folder.str);
 	system(command->str);
 	return 1;
@@ -125,7 +125,7 @@ int createFolder(String folder)
  */
 int validFileName(String name)
 {
-	String *fileRegex = make_String("[^-_.A-Za-z0-9]");
+	String *fileRegex = makeString("[^-_.A-Za-z0-9]");
 	regex_t regex;
 	int value = regcomp(&regex, fileRegex->str, 0);
 	value = regexec(&regex, name.str, 0, NULL, 0) == 0;
@@ -141,7 +141,7 @@ int countLines(String fileName)
 
 	FILE *fp = fopen(fileName.str, "r");
 
-	String *dummyString = make_empty_String();
+	String *dummyString = makeEmptyString();
 	size_t stringLength = 0;
 	ssize_t readFile;
 
@@ -163,15 +163,15 @@ int countLines(String fileName)
 String *getCurrentSubject()
 {
 	String *homePath;
-	homePath = make_empty_String();
+	homePath = makeEmptyString();
 
 	getcwd(homePath->str, MAX_LEN);
 	int strLen = strlen(homePath->str);
-	String *currSubject = make_empty_String();
+	String *currSubject = makeEmptyString();
 
 	char *token;
 	token = strtok(homePath->str, "/");
-	String *prev = make_empty_String();
+	String *prev = makeEmptyString();
 
 	if (isInSubject)
 	{
@@ -182,9 +182,9 @@ String *getCurrentSubject()
 		}
 	}
 
-	for (int i = 0; i < Server_file_count; i++)
+	for (int i = 0; i < serverFileCount; i++)
 	{
-		if (strcmp(prev->str, Subject_array[i].str) == 0)
+		if (strcmp(prev->str, subjectArray[i].str) == 0)
 			return prev;
 	}
 
@@ -203,19 +203,19 @@ void enterSubjectDirectory()
 	under the assignment folder in the server , if it
 	doesn't exists then creates one else returns back
 */
-void IFsubmission_folder(String assignment_folder, String *zipfile)
+void ifSubmissionFolder(String assignmentFolder, String *zipfile)
 {
-	String *submission_folder;
+	String *submissionFolder;
 
-	submission_folder = make_String("../../Server/");
-	submission_folder = attach_String(submission_folder->str, getCurrentSubject()->str);
-	submission_folder = attach_String(submission_folder->str, "/");
-	submission_folder = attach_String(submission_folder->str, assignment_folder.str);
-	submission_folder = attach_String(submission_folder->str, "/submissions");
+    submissionFolder = makeString("../../Server/");
+    submissionFolder = attachString(submissionFolder->str, getCurrentSubject()->str);
+    submissionFolder = attachString(submissionFolder->str, "/");
+    submissionFolder = attachString(submissionFolder->str, assignmentFolder.str);
+    submissionFolder = attachString(submissionFolder->str, "/submissions");
 
-	if (!folderExists(*submission_folder))
+	if (!folderExists(*submissionFolder))
 	{
-		createFolder(*submission_folder);
+		createFolder(*submissionFolder);
 	}
 }
 
@@ -224,28 +224,28 @@ void IFsubmission_folder(String assignment_folder, String *zipfile)
 	then it simply copies the zip file of assignment into that else 
 	it gives us a prompt to either Overwrite it or Return as it. 
 */
-int copy_to_server(String *zipfile, String assignment_folder)
+int copyToServer(String *zipfile, String assignmentFolder)
 {
-	String *home_path = make_empty_String();
+	String *home_path = makeEmptyString();
 
 	getcwd(home_path->str, MAX_LEN);
 
-	String *path = make_empty_String();
+	String *path = makeEmptyString();
 	path->str = "../../Server/";
 
-	path = attach_String(path->str, getCurrentSubject()->str);
-	path = attach_String(path->str, "/");
-	path = attach_String(path->str, assignment_folder.str);
-	path = attach_String(path->str, "/submissions/");
+	path = attachString(path->str, getCurrentSubject()->str);
+	path = attachString(path->str, "/");
+	path = attachString(path->str, assignmentFolder.str);
+	path = attachString(path->str, "/submissions/");
 
-	path = attach_String(path->str, zipfile->str);
+	path = attachString(path->str, zipfile->str);
 
 	if (fileExists(*zipfile))
 	{
 		while (1)
 		{
-			String *prompt = make_empty_String();
-			printf("\n\tThe zip file already exists!\n\tEnter Overwrite to replace existing file or Return to leave as it is: ");
+			String *prompt = makeEmptyString();
+			printf("\n\tThe zip file already exists!\n\tEnter \"Overwrite\" to replace existing file or \"Return\" to leave as it is: ");
 			int i = 0;
 			char temp;
 			while (1)
@@ -264,7 +264,7 @@ int copy_to_server(String *zipfile, String assignment_folder)
 			if (strcmp(prompt->str, "Overwrite") == 0)
 			{
 				deleteFile(*path);
-				String *command = make_empty_String();
+				String *command = makeEmptyString();
 
 				sprintf(command->str, "cp %s %s > /dev/null", zipfile->str, path->str);
 				system(command->str);
@@ -279,15 +279,14 @@ int copy_to_server(String *zipfile, String assignment_folder)
 			}
 			else
 			{
-
-				String* error = make_String("\n\tERROR: Wrong Command, please enter again!\n\n");
+				String* error = makeString("\n\tERROR: Wrong Command, please enter again!\n\n");
                 printError(*error);
 			}
 		}
 	}
 	else
 	{
-		String *command = make_empty_String();
+		String *command = makeEmptyString();
 
 		sprintf(command->str, "cp %s %s > /dev/null", zipfile->str, path->str);
 
