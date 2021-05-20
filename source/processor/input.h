@@ -7,7 +7,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#define LENGTH 1000
 typedef struct String String;
 struct String {
 	char *str;

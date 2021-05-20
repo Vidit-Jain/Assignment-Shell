@@ -1,4 +1,4 @@
-#include "create.h"
+#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
 
@@ -15,10 +15,9 @@ void createAssignment(String *serverPath, String *assignment)
 	folder = attachString(folder->str, assignment->str);
 
 	if (!folderExists(*folder)) {
-		String *error = makeString(
-			"\n\tERROR: No such assignment exists in server\n\n"); // checks
-																   // whether
-		printError(*error);										   // assignment
+		String *error = makeString( "\n\tERROR: No such assignment exists in server\n\n"); // checks
+                                                                                               // whether
+		printError(*error);										                               // assignment
 	} // exists on // server/
 	else if (folderExists(*assignment)) {
 		String *error =

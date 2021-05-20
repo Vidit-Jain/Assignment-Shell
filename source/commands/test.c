@@ -1,4 +1,4 @@
-#include "test.h"
+#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
 #include <stdio.h>

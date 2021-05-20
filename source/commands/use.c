@@ -1,5 +1,6 @@
-#include "use.h"
+#include "commands.h"
 #include "../utils/files.h"
+#include "../globals.h"
 
 void updateUseGlobal() { useCond = 1; }
 

@@ -1,4 +1,9 @@
-#include "tree.h"
+#include "commands.h"
+#include "../utils/files.h"
+#include <dirent.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/stat.h>
 /* Dfs function that recursively prints the files and directories
  * of a given parent directory, with the indents showing the depth of the
  * folder/file

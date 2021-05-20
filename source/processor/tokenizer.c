@@ -1,14 +1,6 @@
 #include "tokenizer.h"
-#include "../commands/compare.h"
-#include "../commands/create.h"
-#include "../commands/execvp.h"
-#include "../commands/setup.h"
-#include "../commands/submit.h"
-#include "../commands/switch.h"
-#include "../commands/test.h"
-#include "../commands/tree.h"
-#include "../commands/update.h"
-#include "../commands/use.h"
+#include "../commands/commands.h"
+#include "../utils/files.h"
 void tokenizeInput(String Input)
 {
 	tokenMat args_mat;

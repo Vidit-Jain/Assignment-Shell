@@ -1,4 +1,4 @@
-#include "switch.h"
+#include "commands.h"
 #include "../globals.h"
 #include "../utils/files.h"
 #include "../utils/string.h"

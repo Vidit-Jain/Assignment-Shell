@@ -1,5 +1,4 @@
-#define _GNU_SOURCE
-#include "submit.h"
+#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
 #include <regex.h>

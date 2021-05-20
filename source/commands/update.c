@@ -1,5 +1,10 @@
-#include "update.h"
+#include "commands.h"
 
+#include "../utils/files.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
 void updateAssignment(String *serverPath, String *assignment)
 {
 	int flag = folderExists(
