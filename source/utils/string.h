@@ -1,8 +1,11 @@
 #ifndef __STRING_H__
 #define __STRING_H__
 
-#include "../globals.h"
-#include "../processor/input.h"
+typedef struct String String;
+struct String {
+    char *str;
+    int length;
+};
 
 // Basic functions
 

@@ -1,6 +1,14 @@
 #include "tokenizer.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #include "../commands/commands.h"
 #include "../utils/files.h"
+
 void tokenizeInput(String Input)
 {
 	tokenMat argsMat;
@@ -9,13 +17,6 @@ void tokenizeInput(String Input)
 	token = strtok(Input.str, " "); // tokenize the input string
 	int i = 0;
 
-	//if (strcmp(token, "list") == 0) // rename list to ls
-	//{
-	//	strcpy(token, "ls");
-	//}
-	if (strcmp(token, "quit") == 0) {
-		exit(0);
-	}
 	while (token != NULL) // store the tokenized string in a token matrix
 	{
         argsMat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
@@ -109,6 +110,9 @@ void execute(tokenMat argsMat)
 	else if (strcmp(argsMat.args[0], "list") == 0) {
         commandList(argsMat);
 	}
+    else if (strcmp(argsMat.args[0], "quit") == 0) {
+        exit(0);
+    }
 	else {
 		String *error = makeEmptyString();
 		sprintf(error->str, "\n\tERROR: Invalid command \"%s\"\n\n",

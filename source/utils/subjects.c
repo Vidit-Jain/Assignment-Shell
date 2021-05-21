@@ -1,5 +1,5 @@
-// used to keep an array of subject names
 #include "subjects.h"
+// used to keep an array of subject names
 void initializeSubjectArray()
 {
 

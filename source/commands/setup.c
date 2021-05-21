@@ -1,4 +1,4 @@
-#define _GNU_SOURCE
+#include "commands.h"
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,7 +6,6 @@
 
 #include "../utils/files.h"
 #include "../utils/string.h"
-#include "commands.h"
 #define ASCII_TAB 9
 
 /* Returns the number of tabs the string is indented with,

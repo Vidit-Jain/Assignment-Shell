@@ -1,6 +1,11 @@
 #include "prompt.h"
 #include "../globals.h"
 #include "../utils/files.h"
+#include "../utils/string.h"
+#include "../utils/sysinfo.h"
+
+#include <unistd.h>
+
 void initialize() // initialize the home_path and prev_path
 {
 	homePath.str = malloc(sizeof(char) * MAX_TOKEN_LENGTH);

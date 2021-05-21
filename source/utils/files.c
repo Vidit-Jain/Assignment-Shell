@@ -1,32 +1,39 @@
-#define _GNU_SOURCE
-#include "files.h"
-#include "string.h"
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <unistd.h>
+
+#include "files.h"
+#include "string.h"
+#include "../globals.h"
 
 #define MAX_LEN 2000
-// Prints an error in rea
+// Prints an error in red
 void printError(String message)
 {
 	printf("\033[1;31m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
+
+// Prints the success message in green
 void printSuccess(String message)
 {
 	printf("\033[0;32m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
+
+// Prints the warning message in yellow
 void printWarning(String message)
 {
 	printf("\033[0;33m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
+
 // Takes in a path and verifies if such a folder exists
 int folderExists(String path)
 {
@@ -117,6 +124,7 @@ int createFolder(String folder)
 	system(command->str);
 	return 1;
 }
+
 /* Uses regex to verify if the given name is a valid file name
  * We've restricted the file names intentionally, so you might be able to make
  * file names with some symbols normally but wouldn't pass validFileName as we

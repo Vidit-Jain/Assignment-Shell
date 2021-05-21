@@ -8,11 +8,8 @@
 #include <unistd.h>
 
 #include "../globals.h"
-#include "../processor/input.h"
 #include "string.h"
 
 String getUsername();
-String getPwd();
-void outPwd();
 
 #endif

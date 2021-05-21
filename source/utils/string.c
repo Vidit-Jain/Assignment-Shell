@@ -35,7 +35,7 @@ String eraseString(String x)
 
 /* Makes a input String into newly created String data-type
 	such that it also stores it length for faster access to it
-	at later occurences.
+	at later occurrences.
 */
 String *makeString(const char *src)
 {

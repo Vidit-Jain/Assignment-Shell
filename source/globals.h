@@ -1,22 +1,19 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#include "processor/input.h"
+#include "utils/string.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
 #define MAX_NUM_OF_TOKENS 20
 #define MAX_TOKEN_LENGTH 100
 
-extern String *subj;
 extern int startPoint;
 extern int isInSubject;
 
 extern String homePath;
-extern String *serverPath;
 extern String prevPath;
 
 extern int serverFileCount;
