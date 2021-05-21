@@ -3,29 +3,29 @@
 #include "../utils/files.h"
 void tokenizeInput(String Input)
 {
-	tokenMat args_mat;
-	args_mat = makeArgsMat();
+	tokenMat argsMat;
+    argsMat = makeArgsMat();
 	char *token;
 	token = strtok(Input.str, " "); // tokenize the input string
 	int i = 0;
 
-	if (strcmp(token, "list") == 0) // rename list to ls
-	{
-		strcpy(token, "ls");
-	}
+	//if (strcmp(token, "list") == 0) // rename list to ls
+	//{
+	//	strcpy(token, "ls");
+	//}
 	if (strcmp(token, "quit") == 0) {
 		exit(0);
 	}
 	while (token != NULL) // store the tokenized string in a token matrix
 	{
-		args_mat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
-		strcpy(args_mat.args[i], token);
+        argsMat.args[i] = malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+		strcpy(argsMat.args[i], token);
 		token = strtok(NULL, " ");
 		i++;
 	}
-	args_mat.numArgs = i - 1; // number of arguments to a command
-	args_mat.args[i] = token;
-	execute(args_mat); // send it to the required command
+    argsMat.numArgs = i - 1; // number of arguments to a command
+	argsMat.args[i] = token;
+	execute(argsMat); // send it to the required command
 }
 
 void execute(tokenMat argsMat)
@@ -106,10 +106,8 @@ void execute(tokenMat argsMat)
 	else if (strcmp(argsMat.args[0], "use") == 0) {
 		commandUse(argsMat);
 	}
-	else if (strcmp(argsMat.args[0], "ls") == 0) {
-		printf("\n");
-		exec(argsMat);
-		printf("\n");
+	else if (strcmp(argsMat.args[0], "list") == 0) {
+        commandList(argsMat);
 	}
 	else {
 		String *error = makeEmptyString();

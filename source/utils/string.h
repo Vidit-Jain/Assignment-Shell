@@ -13,7 +13,7 @@ String *makeString(const char *src);
 int compareString(String str1, String str2);
 String eraseString(String x);
 
-// utility function
+// Utility function
 
 String *attachString(char *x, char *y);
 

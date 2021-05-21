@@ -12,7 +12,7 @@ void initialize() // initialize the home_path and prev_path
 	prevPath.length = strlen(prevPath.str);
 }
 
-void prompt_print() // print the username and subject to give terminal feel
+void promptPrint() // print the username and subject to give terminal feel
 {
 	if (useCond) {
 		printf(BLUE);

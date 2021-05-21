@@ -1,8 +1,7 @@
-#include "commands/commands.h"
-#include "processor/input.h"
 #include "processor/prompt.h"
 #include "processor/tokenizer.h"
 #include "utils/files.h"
+#include "utils/string.h"
 #include "utils/subjects.h"
 
 int main()
@@ -18,27 +17,29 @@ int main()
 
 	enterSubjectDirectory();
 	initializeSubjectArray();
+
+	// Creates all the subject subdirectories that are present in the server
 	for (int i = 0; i < serverFileCount; i++) {
 		createFolder(subjectArray[i]);
 	}
 
 	while (1) {
 		initialize();
-		String input;
-		prompt_print();
-		i = 0;
+		promptPrint();
+
 		char temp;
-		input.str = (char *)malloc(sizeof(char) * MAX_TOKEN_LENGTH);
+		String *input = makeEmptyString();
+		i = 0;
 		while (1) {
 			temp = (char)getchar();
 			if (temp != '\n')
-				input.str[i++] = temp;
+				input->str[i++] = temp;
 			else {
-				input.str[i] = '\0';
+				input->str[i] = '\0';
 				break;
 			}
 		}
 
-		tokenizeInput(input);
+		tokenizeInput(*input);
 	}
 }

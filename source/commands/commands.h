@@ -4,7 +4,6 @@
 #include "../utils/inputMat.h"
 #include "../utils/string.h"
 void createAssignment(String *serverPath, String *assignment);
-void exec(tokenMat args_mat);
 
 void commandCompare(tokenMat argsMat);
 void commandCreate(tokenMat argsMat);
@@ -15,5 +14,6 @@ void commandTest(tokenMat argsMat);
 void commandTree(tokenMat argsMat);
 void commandUpdate(tokenMat argsMat);
 void commandUse(tokenMat argsMat);
+void commandList(tokenMat argsMat);
 
 #endif

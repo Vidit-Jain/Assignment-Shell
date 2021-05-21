@@ -7,6 +7,6 @@
 #include <unistd.h>
 
 void initialize();
-void prompt_print();
+void promptPrint();
 
 #endif
