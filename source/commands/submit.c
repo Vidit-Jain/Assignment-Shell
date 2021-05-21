@@ -6,13 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-// supporting function which creates zip for assignment folder
+// Supporting function which creates zip for assignment folder
 int createAssignmentZip(String path) { return createZip(path, path); }
 
-/* this function is called upon when we are in a subject directory and
-the submit command was used properly
-without any wrong syntax
-*/
+/* This function is called upon when we are in a subject directory and
+ * the submit command was used properly without any wrong syntax
+ */
 void userCommandSubmit(String folder)
 {
 	String *zip_name = makeEmptyString();
@@ -55,7 +54,7 @@ void userCommandSubmit(String folder)
 	}
 }
 
-/* this is the function that is being called by the tokenizer and input is
+/* This is the function that is being called by the tokenizer and input is
 provided to it and it checks edge cases and then only send the input
 further to main submit function which does its operation as defined
 */

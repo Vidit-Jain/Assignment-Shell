@@ -22,32 +22,33 @@ void switchSubject(String subject)
 	homePath = makeEmptyString();
 
 	getcwd(homePath->str, MAX_LEN);
-	int strLen = strlen(homePath->str);
 	String *currentSubject = getCurrentSubject();
+
+    // Going back to the prev dir i.e where all the subj folders are present
 	if (isInSubject) {
 		exitCurrentDirectory();
 	}
-	// going back to the prev dir i.e where all the
-	// subj folders are present
 
-	int flag = folderExists(subject); // checking if the subject exists
+    // Checking if the subject exists
+	int flag = folderExists(subject);
 
 	if (!flag) {
 		String *error = makeEmptyString();
 		sprintf(error->str, "\n\tERROR: Subject \"%s\" doesn't exist\n\n",
 				subject.str);
 		printError(*error);
+
 		if (isInSubject == 1)
 			chdir(currentSubject->str);
 	}
 	else {
-		chdir(
-			subject.str); // changes the cwd to the subject entered by the user
+	    // Changes the cwd to the subject entered by the user
+		chdir(subject.str);
 		isInSubject = 1;
-		getcwd(homePath->str, MAX_LEN); // here it gets the path of the cwd i.e
-										// after we switch to the subject
-	}
 
+		// Gets the path of the cwd after switching into the subject
+		getcwd(homePath->str, MAX_LEN);
+	}
 	return;
 }
 

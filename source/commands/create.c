@@ -14,39 +14,37 @@ void createAssignment(String *serverPath, String *assignment)
 	folder = attachString(serverPath->str, "/");
 	folder = attachString(folder->str, assignment->str);
 
+	// Check whether assignment exists on the server
 	if (!folderExists(*folder)) {
-		String *error = makeString( "\n\tERROR: No such assignment exists in server\n\n"); // checks
-                                                                                               // whether
-		printError(*error);										                               // assignment
-	} // exists on // server/
-	else if (folderExists(*assignment)) {
+		String *error = makeString( "\n\tERROR: No such assignment exists in server\n\n");
+		printError(*error);
+	}
+	else if (folderExists(*assignment)) { // Checks if assignment already created
 		String *error =
 			makeString("\n\tERROR: This assignment already exists\n\n");
-		printError(*error); // checks whether
-	}						// assignment was
-							// already created//
+		printError(*error);
+	}
+
 	else {
-		createFolder(*assignment); // creates folder for assignment//
+		createFolder(*assignment); // Creates folder for assignment
 
 		String *dist = attachString(folder->str, "/dist");
 
 		String *command = makeEmptyString();
 
-		sprintf(command->str,
-				"find %s/ -name '*.pdf' -exec cp -pr '{}' '%s/' ';'",
-				folder->str,
-				assignment->str); // finds all pdf files present in server and
-								  // copies them to assignment
+        // Finds all pdf files present in server and
+        // copies them to the assignment
+		sprintf(command->str, "find %s/ -name '*.pdf' -exec cp -pr '{}' '%s/' ';'", folder->str, assignment->str);
+
 		system(command->str);
+
 		if (folderExists(*dist)) {
-			sprintf(
-				command->str, "cp -r  %s %s> /dev/null", dist->str,
-				assignment
-					->str); // copies dist folder from server into assignment//
+            // Copies dist folder from server into assignment
+			sprintf(command->str, "cp -r  %s %s> /dev/null", dist->str, assignment ->str);
 			system(command->str);
+
 			String *success = makeEmptyString();
-			sprintf(success->str, "\n\tAssignment \"%s\" created\n\n",
-					assignment->str);
+			sprintf(success->str, "\n\tAssignment \"%s\" created\n\n", assignment->str);
 			printSuccess(*success);
 		}
 		else {
@@ -63,7 +61,6 @@ void commandCreate(tokenMat argsMat)
 {
 
 	if (argsMat.numArgs != 1) {
-
 		String *error = makeString(
 			"\n\tERROR: Invalid usage of the create command\n\n\tcreate "
 			"command syntax: create <assignment> \n\n");
@@ -78,6 +75,7 @@ void commandCreate(tokenMat argsMat)
 		String *assignmentName = makeString(argsMat.args[1]);
 		String *currSubj = getCurrentSubject();
 		String *serverPath = makeString("../../Server/");
+
 		serverPath = attachString(serverPath->str, currSubj->str);
 		createAssignment(serverPath, assignmentName);
 	}

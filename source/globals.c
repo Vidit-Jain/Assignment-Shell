@@ -1,5 +1,4 @@
 #include "globals.h"
-int startPoint;
 int isInSubject;
 
 String homePath;

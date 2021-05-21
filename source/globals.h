@@ -10,7 +10,6 @@
 #define MAX_NUM_OF_TOKENS 20
 #define MAX_TOKEN_LENGTH 100
 
-extern int startPoint;
 extern int isInSubject;
 
 extern String homePath;
