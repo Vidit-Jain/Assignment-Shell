@@ -1,11 +1,10 @@
-#include "commands.h"
-#include "../utils/files.h"
 #include "../globals.h"
+#include "../utils/files.h"
+#include "commands.h"
 
 void updateUseGlobal() { useCond = 1; }
 
-void useAssignment(String assignmentName)
-{
+void useAssignment(String assignmentName) {
 	if (!folderExists(assignmentName)) {
 		String *error = makeEmptyString();
 		sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n",
@@ -22,20 +21,17 @@ void useAssignment(String assignmentName)
 					   // function
 }
 
-void commandUse(tokenMat argsMat)
-{
+void commandUse(tokenMat argsMat) {
 	if (argsMat.numArgs != 1) {
 		String *error =
 			makeString("\n\tERROR: Invalid usage of the use command\n\n\tuse "
 					   "command syntax: use <assignment> \n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *assignmentName = makeString(argsMat.args[1]);
 		useAssignment(*assignmentName);
 	}

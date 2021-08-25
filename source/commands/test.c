@@ -1,13 +1,12 @@
-#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
+#include "commands.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 
-void test(String folder)
-{
+void test(String folder) {
 	String *file;
 
 	file = attachString(folder.str, "/dist/submitter.py");
@@ -21,9 +20,8 @@ void test(String folder)
 			sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n",
 					folder.str);
 			printError(*error);
-		}
-		else if (!fileExists(*file)) { // checks whether submitter.py exists in
-									   // assignment//
+		} else if (!fileExists(*file)) { // checks whether submitter.py exists
+										 // in assignment//
 			String *error = makeEmptyString();
 			sprintf(error->str,
 					"\n\tERROR: Assignment \"%s\" cannot be tested as it does "
@@ -34,8 +32,7 @@ void test(String folder)
 		}
 
 		printf("\n");
-	}
-	else {
+	} else {
 		int i = 1;
 
 		String *filename = makeEmptyString();
@@ -66,20 +63,17 @@ void test(String folder)
 	}
 }
 
-void commandTest(tokenMat argsMat)
-{
+void commandTest(tokenMat argsMat) {
 	if (argsMat.numArgs != 1) {
 		String *error =
 			makeString("\n\tERROR: Invalid usage of the test command\n\n\ttest "
 					   "command syntax: test <assignment>\n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *assignmentName = makeString(argsMat.args[1]);
 		test(*assignmentName);
 	}

@@ -1,5 +1,5 @@
-#include "commands.h"
 #include "../utils/files.h"
+#include "commands.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,8 +8,7 @@
  * of a given parent directory, with the indents showing the depth of the
  * folder/file
  */
-void dfsFiles(String path, int tabs, FILE *fp)
-{
+void dfsFiles(String path, int tabs, FILE *fp) {
 
 	// Directory entry
 	struct dirent *de;
@@ -44,16 +43,14 @@ void dfsFiles(String path, int tabs, FILE *fp)
 			fprintf(fp, "/\n");
 			dfsFiles(*a, tabs + 1,
 					 fp); // Calls one level deeper, so an extra indentation
-		}
-		else
+		} else
 			fprintf(fp, "\n");
 	}
 
 	closedir(dr);
 }
 
-void printTree(String assignmentName)
-{
+void printTree(String assignmentName) {
 
 	// Don't print the tree if the assignment doesn't exist
 	if (!folderExists(assignmentName)) {
@@ -61,9 +58,8 @@ void printTree(String assignmentName)
 		sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n",
 				assignmentName.str);
 		printError(*error);
-	}
-	else { // If the assignment exists enter the assignment and recursively
-		   // print all the files
+	} else { // If the assignment exists enter the assignment and recursively
+			 // print all the files
 		String *path = makeString("./");
 		path = attachString(path->str, assignmentName.str);
 		String *fileStructure = makeString(path->str);
@@ -82,21 +78,18 @@ void printTree(String assignmentName)
 	}
 }
 
-void commandTree(tokenMat argsMat)
-{
+void commandTree(tokenMat argsMat) {
 
 	if (argsMat.numArgs != 1) {
 		String *error =
 			makeString("\n\tERROR: Invalid usage of the tree command\n\n\ttree "
 					   "command syntax: tree <assignment>\n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *assignmentName = makeString(argsMat.args[1]);
 		printTree(*assignmentName);
 	}

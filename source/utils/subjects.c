@@ -1,7 +1,6 @@
 #include "subjects.h"
 // used to keep an array of subject names
-void initializeSubjectArray()
-{
+void initializeSubjectArray() {
 
 	DIR *d;
 	struct dirent *dir;

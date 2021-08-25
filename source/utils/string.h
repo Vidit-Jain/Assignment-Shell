@@ -3,8 +3,8 @@
 
 typedef struct String String;
 struct String {
-    char *str;
-    int length;
+	char *str;
+	int length;
 };
 
 // Basic functions

@@ -35,8 +35,7 @@ void promptPrint() // print the username and subject to give terminal feel
 		printf(BLUE);
 		printf("$ ");
 		printf(RESET);
-	}
-	else {
+	} else {
 		printf(BLUE);
 		printf("<%s:", getUsername().str);
 		printf(RESET);

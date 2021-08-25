@@ -11,8 +11,7 @@
 /* Returns the number of tabs the string is indented with,
  * doesn't work on whitespaces, only tabs
  */
-int noOfTabs(String fileLine)
-{
+int noOfTabs(String fileLine) {
 	int tabCount = 0;
 
 	for (int i = 0; i < fileLine.length; i++) {
@@ -26,8 +25,7 @@ int noOfTabs(String fileLine)
 }
 
 // Returns an array of the number of indents on each line of the file
-int *countIndents(String assignmentName, String fileName, int lines)
-{
+int *countIndents(String assignmentName, String fileName, int lines) {
 
 	int *indentCount = (int *)calloc(sizeof(int), lines);
 
@@ -76,8 +74,7 @@ int *countIndents(String assignmentName, String fileName, int lines)
 
 	return indentCount;
 }
-void createFileStructure(String fileName, int *indentCount, int lines)
-{
+void createFileStructure(String fileName, int *indentCount, int lines) {
 	String *directory = makeString(".");
 	int curr_indent = 0;
 
@@ -162,16 +159,13 @@ void createFileStructure(String fileName, int *indentCount, int lines)
  * doesn't correspond with the assignment we're setting up
  */
 
-int validFileStructure(int *arr, int lines)
-{
+int validFileStructure(int *arr, int lines) {
 	int code;
 	if (arr[0] == -1) {
 		code = 4;
-	}
-	else if (arr[0] == -2) {
+	} else if (arr[0] == -2) {
 		code = 5;
-	}
-	else {
+	} else {
 		int flag = arr[0] == 0;
 		int onlyZero = 1;
 		for (int i = 1; i < lines; i++) {
@@ -183,8 +177,7 @@ int validFileStructure(int *arr, int lines)
 	return code;
 }
 // Returns the path to the setup.txt file in the assignment
-String *fileInAssignment(String assignment)
-{
+String *fileInAssignment(String assignment) {
 	String *setupFile = makeEmptyString();
 	sprintf(setupFile->str, "%s/dist/setup.txt", assignment.str);
 	return setupFile;
@@ -196,8 +189,7 @@ String *fileInAssignment(String assignment)
  * If any one of them is false, we do not perform the setup
  * Else we return 1 to indicate that the file does exist
  */
-int setupExists(String assignmentName)
-{
+int setupExists(String assignmentName) {
 	String *textFilePath = makeString(assignmentName.str);
 
 	if (!folderExists(*textFilePath)) {
@@ -206,8 +198,7 @@ int setupExists(String assignmentName)
 				assignmentName.str);
 		printError(*error);
 		return 0;
-	}
-	else {
+	} else {
 		textFilePath = attachString(textFilePath->str, "/dist");
 		if (!folderExists(*textFilePath)) {
 			String *error = makeEmptyString();
@@ -216,8 +207,7 @@ int setupExists(String assignmentName)
 					assignmentName.str);
 			printError(*error);
 			return 0;
-		}
-		else {
+		} else {
 			textFilePath = attachString(textFilePath->str, "/setup.txt");
 			if (!fileExists(*textFilePath)) {
 				String *error = makeEmptyString();
@@ -232,8 +222,7 @@ int setupExists(String assignmentName)
 	return 1;
 }
 
-void setup(String assignmentName)
-{
+void setup(String assignmentName) {
 	String textFilePath = *fileInAssignment(assignmentName);
 
 	if (!setupExists(assignmentName))
@@ -247,27 +236,22 @@ void setup(String assignmentName)
 		sprintf(error->str,
 				"\n\tERROR: Wrong assignment name in setup.txt file\n\n");
 		printError(*error);
-	}
-	else if (code == 4) {
+	} else if (code == 4) {
 		sprintf(error->str, "\n\tERROR: Invalid folder name/s\n\n");
 		printError(*error);
-	}
-	else if (code == 3) {
+	} else if (code == 3) {
 		sprintf(error->str, "\n\tERROR: Invalid indenting and multiple "
 							"assignments specified\n\n");
 		printError(*error);
-	}
-	else if (code == 2) {
+	} else if (code == 2) {
 		sprintf(error->str,
 				"\n\tERROR: You can only create one assignment at a time\n\n");
 		printError(*error);
-	}
-	else if (code == 1) {
+	} else if (code == 1) {
 		sprintf(error->str,
 				"\n\tERROR: Invalid indenting in the file structure\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		// Creates file structure if there are no issues with the file
 		createFileStructure(textFilePath, indentCount, lines);
 	}
@@ -275,20 +259,17 @@ void setup(String assignmentName)
 	free(indentCount);
 }
 
-void commandSetup(tokenMat argsMat)
-{
+void commandSetup(tokenMat argsMat) {
 	if (argsMat.numArgs != 1) {
 		String *error = makeString(
 			"\n\tERROR: Invalid usage of the setup command\n\n\tsetup command "
 			"syntax: setup <assignment>\n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *fileName = makeString(argsMat.args[1]);
 		setup(*fileName);
 	}

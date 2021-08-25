@@ -1,6 +1,6 @@
-#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
+#include "commands.h"
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,8 +12,7 @@ int createAssignmentZip(String path) { return createZip(path, path); }
 /* This function is called upon when we are in a subject directory and
  * the submit command was used properly without any wrong syntax
  */
-void userCommandSubmit(String folder)
-{
+void userCommandSubmit(String folder) {
 	String *zip_name = makeEmptyString();
 
 	// Deleting zip if it exists
@@ -27,8 +26,7 @@ void userCommandSubmit(String folder)
 		String *success = makeEmptyString();
 		sprintf(success->str, "\n\t%s created successfully\n\n", zip_name->str);
 		printSuccess(*success);
-	}
-	else {
+	} else {
 		String *error = makeEmptyString();
 		sprintf(error->str, "\n\tERROR: Assignment \"%s\" doesn't exist\n\n",
 				folder.str);
@@ -43,8 +41,7 @@ void userCommandSubmit(String folder)
 			sprintf(success->str, "\n\t%s successfully submitted to server\n\n",
 					zip_name->str);
 			printSuccess(*success);
-		}
-		else {
+		} else {
 			String *error = makeEmptyString();
 			sprintf(error->str,
 					"\n\tERROR: %s wasn't copied due to duplicate\n\n",
@@ -58,20 +55,17 @@ void userCommandSubmit(String folder)
 provided to it and it checks edge cases and then only send the input
 further to main submit function which does its operation as defined
 */
-void commandSubmit(tokenMat argsMat)
-{
+void commandSubmit(tokenMat argsMat) {
 	if (argsMat.numArgs != 1) {
 		String *error = makeString(
 			"\n\tERROR: Invalid usage of the submit command\n\n\tsubmit "
 			"command syntax: setup <assignment>\n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *fileName = makeString(argsMat.args[1]);
 		userCommandSubmit(*fileName);
 	}

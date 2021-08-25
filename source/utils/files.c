@@ -5,45 +5,40 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include "../globals.h"
 #include "files.h"
 #include "string.h"
-#include "../globals.h"
 
 #define MAX_LEN 2000
 // Prints an error in red
-void printError(String message)
-{
+void printError(String message) {
 	printf("\033[1;31m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
 
 // Prints the success message in green
-void printSuccess(String message)
-{
+void printSuccess(String message) {
 	printf("\033[0;32m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
 
 // Prints the warning message in yellow
-void printWarning(String message)
-{
+void printWarning(String message) {
 	printf("\033[0;33m");
 	printf("%s", message.str);
 	printf("\033[0m");
 }
 
 // Takes in a path and verifies if such a folder exists
-int folderExists(String path)
-{
+int folderExists(String path) {
 	struct stat sb;
 	return stat(path.str, &sb) == 0 && S_ISDIR(sb.st_mode);
 }
 
 // Takes in a path and verifies if such a file exists
-int fileExists(String path)
-{
+int fileExists(String path) {
 	struct stat sb;
 	return stat(path.str, &sb) == 0 && S_ISREG(sb.st_mode);
 }
@@ -52,8 +47,7 @@ int fileExists(String path)
  * Returns 0 if it doesn't exist
  * Returns 1 if it does and deletes the file
  */
-int deleteFile(String path)
-{
+int deleteFile(String path) {
 	if (!fileExists(path)) {
 		return 0;
 	}
@@ -67,8 +61,7 @@ int deleteFile(String path)
  * Returns 0 if it doesn't exist
  * Returns 1 if it does and deletes the folder
  */
-int deleteFolder(String path)
-{
+int deleteFolder(String path) {
 	if (!folderExists(path)) {
 		return 0;
 	}
@@ -82,8 +75,7 @@ int deleteFolder(String path)
  * Returns 0 if the folder doesn't exist
  * Returns 1 if the folder exists and you create a zip with the name as zipName
  */
-int createZip(String path, String zipName)
-{
+int createZip(String path, String zipName) {
 	if (!folderExists(path)) {
 		return 0;
 	}
@@ -98,8 +90,7 @@ int createZip(String path, String zipName)
  * Returns 0 if the zip files doesn't exist
  * Returns 1 if it does and is unzipped
  */
-int unzipToDirectory(String zipName, String path)
-{
+int unzipToDirectory(String zipName, String path) {
 	if (!fileExists(zipName)) {
 		return 0;
 	}
@@ -113,8 +104,7 @@ int unzipToDirectory(String zipName, String path)
  * Returns 0 if the folder already exists
  * Else it returns 1 and creates the folder
  */
-int createFolder(String folder)
-{
+int createFolder(String folder) {
 	if (folderExists(folder)) {
 		return 0;
 	}
@@ -130,8 +120,7 @@ int createFolder(String folder)
  * file names with some symbols normally but wouldn't pass validFileName as we
  * only want more standard symbols for files to be permitted
  */
-int validFileName(String name)
-{
+int validFileName(String name) {
 	String *fileRegex = makeString("[^-_.A-Za-z0-9]");
 	regex_t regex;
 	int value = regcomp(&regex, fileRegex->str, 0);
@@ -141,8 +130,7 @@ int validFileName(String name)
 
 // Opens a file and returns the number of lines in it, returns -1 if it doesn't
 // exist
-int countLines(String fileName)
-{
+int countLines(String fileName) {
 
 	if (!fileExists(fileName))
 		return -1;
@@ -167,8 +155,7 @@ int countLines(String fileName)
 	currently present in, it really helps in getting subject
 	at any point of the program
 */
-String *getCurrentSubject()
-{
+String *getCurrentSubject() {
 	String *homePath;
 	homePath = makeEmptyString();
 
@@ -197,8 +184,7 @@ String *getCurrentSubject()
 }
 
 // Enters the subject directory when you start the shell
-void enterSubjectDirectory()
-{
+void enterSubjectDirectory() {
 	chdir("Subjects");
 	printf("Enter switch <subject_name> to begin\n");
 }
@@ -207,8 +193,7 @@ void enterSubjectDirectory()
 	under the assignment folder in the server , if it
 	doesn't exists then creates one else returns back
 */
-void ifSubmissionFolder(String assignmentFolder, String *zipfile)
-{
+void ifSubmissionFolder(String assignmentFolder, String *zipfile) {
 	String *submissionFolder;
 
 	submissionFolder = makeString("../../Server/");
@@ -229,8 +214,7 @@ void ifSubmissionFolder(String assignmentFolder, String *zipfile)
 	then it simply copies the zip file of assignment into that else
 	it gives us a prompt to either Overwrite it or Return as it.
 */
-int copyToServer(String *zipfile, String assignmentFolder)
-{
+int copyToServer(String *zipfile, String assignmentFolder) {
 	String *home_path = makeEmptyString();
 
 	getcwd(home_path->str, MAX_LEN);
@@ -278,15 +262,13 @@ int copyToServer(String *zipfile, String assignmentFolder)
 			*/
 			else if (strcmp(prompt->str, "Return") == 0) {
 				return 0;
-			}
-			else {
+			} else {
 				String *error = makeString(
 					"\n\tERROR: Wrong Command, please enter again!\n\n");
 				printError(*error);
 			}
 		}
-	}
-	else {
+	} else {
 		String *command = makeEmptyString();
 
 		sprintf(command->str, "cp %s %s > /dev/null", zipfile->str, path->str);

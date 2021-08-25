@@ -4,10 +4,8 @@
 #include "utils/string.h"
 #include "utils/subjects.h"
 
-int main()
-{
+int main() {
 	clearScreen();
-	startPoint = 0;
 	useCond = 0;
 	int i;
 

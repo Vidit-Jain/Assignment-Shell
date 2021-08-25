@@ -1,6 +1,6 @@
-#include "commands.h"
 #include "../utils/files.h"
 #include "../utils/string.h"
+#include "commands.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -9,8 +9,7 @@
  * and stores it in a file name specified by hashName The files are in sorted
  * order as it makes it easier to compare the hashes later
  */
-void folderHash(String assignmentName, String hashName)
-{
+void folderHash(String assignmentName, String hashName) {
 	String *command = makeEmptyString();
 	sprintf(command->str,
 			"find %s -type f -print0 | sort -z | xargs -r0 md5sum > %s",
@@ -21,8 +20,7 @@ void folderHash(String assignmentName, String hashName)
 /* Unzips a zip file into a temporary folder, generates a list of it's hashes
  * and then deletes the temporary folder that was created
  */
-void zipHash(String fileName, String hashName)
-{
+void zipHash(String fileName, String hashName) {
 	unzipToDirectory(fileName, *makeString("TemporaryMD5/"));
 	folderHash(*makeString("TemporaryMD5/"), hashName);
 	deleteFolder(*makeString("TemporaryMD5"));
@@ -42,8 +40,7 @@ void zipHash(String fileName, String hashName)
  *
  * In case only case 1 occurs, that means the integrity is maintained
  */
-void compareHash(String file1, String file2)
-{
+void compareHash(String file1, String file2) {
 	int assignmentFileLines = countLines(file1);
 	int zipFileLines = countLines(file2);
 
@@ -86,9 +83,8 @@ void compareHash(String file1, String file2)
 
 			indexAssignment++;
 			indexZip++;
-		}
-		else if (comparePaths >
-				 0) { // Implies a file has been deleted from the directory
+		} else if (comparePaths >
+				   0) { // Implies a file has been deleted from the directory
 			String *error = makeEmptyString();
 			sprintf(error->str,
 					"\t%s is in the zip file but not in the directory\n",
@@ -100,8 +96,7 @@ void compareHash(String file1, String file2)
 			// behind
 			fscanf(zipFileHash, "%s %s", hash2->str, path2->str);
 			indexZip++;
-		}
-		else { // A new file was added into the directory
+		} else { // A new file was added into the directory
 			String *error = makeEmptyString();
 			sprintf(error->str,
 					"\t%s is in the directory but not in the zip file\n",
@@ -151,8 +146,7 @@ void compareHash(String file1, String file2)
 	printf("\n");
 }
 
-void verifyIntegrity(String folder, String file)
-{
+void verifyIntegrity(String folder, String file) {
 
 	// Create hashes of the assignment and the zip
 	folderHash(folder, *makeString("checkList.chk"));
@@ -168,8 +162,7 @@ void verifyIntegrity(String folder, String file)
 	deleteFile(*makeString("checkList2.chk"));
 }
 
-void compareAssignment(String folder, String file)
-{
+void compareAssignment(String folder, String file) {
 
 	// Checking if the folder and file exists before verifying integrity
 	int flag = folderExists(folder) && fileExists(file);
@@ -188,27 +181,23 @@ void compareAssignment(String folder, String file)
 			printError(*error);
 		}
 		printf("\n");
-	}
-	else {
+	} else {
 		// If they both exist then verify their integrity
 		verifyIntegrity(folder, file);
 	}
 }
 
-void commandCompare(tokenMat argsMat)
-{
+void commandCompare(tokenMat argsMat) {
 	if (argsMat.numArgs != 2) {
 		String *error = makeString(
 			"\n\tERROR: Invalid usage of the compare command\n\n\tcompare "
 			"command syntax: compare <assignment> <zipfile> \n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *folder = makeString(argsMat.args[1]);
 		String *file = makeString(argsMat.args[2]);
 

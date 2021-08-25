@@ -5,8 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-void updateAssignment(String *serverPath, String *assignment)
-{
+void updateAssignment(String *serverPath, String *assignment) {
 	int flag = folderExists(
 		*assignment); // checking if the assignment exists in the given subj
 
@@ -24,8 +23,7 @@ void updateAssignment(String *serverPath, String *assignment)
 				error->str,
 				"\n\tERROR: No such assignment exists for this Subject\n\n");
 			printError(*error);
-		}
-		else {
+		} else {
 			// the assignment exists in the server , calling the create function
 			String *warning =
 				makeString("\n\tNo such assignment exists on your local "
@@ -33,8 +31,7 @@ void updateAssignment(String *serverPath, String *assignment)
 			printWarning(*warning);
 			createAssignment(serverPath, assignment);
 		}
-	}
-	else // the assignment exists in the local machine
+	} else // the assignment exists in the local machine
 	{
 		String *get = makeEmptyString();
 		sprintf(get->str, "find %s/ -type f -name '*.pdf' > %s/pdfNames.txt",
@@ -97,20 +94,17 @@ void updateAssignment(String *serverPath, String *assignment)
 	}
 }
 
-void commandUpdate(tokenMat argsMat)
-{
+void commandUpdate(tokenMat argsMat) {
 	if (argsMat.numArgs != 1) {
 		String *error = makeString(
 			"\n\tERROR: Invalid usage of the update command\n\n\tupdate "
 			"command syntax: update <assignment> \n\n");
 		printError(*error);
-	}
-	else if (!isInSubject) {
+	} else if (!isInSubject) {
 		String *error =
 			makeString("\n\tERROR: You are not in a Subject yet\n\n");
 		printError(*error);
-	}
-	else {
+	} else {
 		String *assignmentName = makeString(argsMat.args[1]);
 		String *currSubj = getCurrentSubject();
 		String *serverPath = makeString("../../Server/");

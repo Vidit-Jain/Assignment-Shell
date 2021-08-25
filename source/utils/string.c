@@ -11,8 +11,7 @@
 /* This function creates a struct pointer variable , allocates it space
    and return the pointer to struct
 */
-String *makeEmptyString()
-{
+String *makeEmptyString() {
 	String *empty;
 	empty = (String *)malloc(sizeof(String));
 	empty->str = (char *)malloc(sizeof(char) * 200);
@@ -24,8 +23,7 @@ String *makeEmptyString()
 	it removes the characters it had and makes it length = 0,
 	making it re-usable without again allocating space
 */
-String eraseString(String x)
-{
+String eraseString(String x) {
 	x.str[0] = '\0';
 
 	x.length = 1;
@@ -37,8 +35,7 @@ String eraseString(String x)
 	such that it also stores it length for faster access to it
 	at later occurrences.
 */
-String *makeString(const char *src)
-{
+String *makeString(const char *src) {
 	String *data = makeEmptyString();
 
 	data->length = strlen(src) + 1;
@@ -51,8 +48,7 @@ String *makeString(const char *src)
 /* This function copies a struct String pointer to another inorder
 	to use struct's functionalities later
 */
-String *copyString(String *dest, String *src)
-{
+String *copyString(String *dest, String *src) {
 	dest = makeEmptyString();
 
 	dest->length = src->length;
@@ -66,8 +62,7 @@ String *copyString(String *dest, String *src)
 	if both are equal then returns min(strlen1.strlen2)
 	else returns index till which they are same
 */
-int compareString(String str1, String str2)
-{
+int compareString(String str1, String str2) {
 	int i;
 
 	for (i = 0; i < str1.length && i < str2.length; i++) {
@@ -83,8 +78,7 @@ int compareString(String str1, String str2)
 	should be broken at,i.e, the characters after that index
 	are replaced with just a \0"
 */
-String *breakString(String src, int break_len)
-{
+String *breakString(String src, int break_len) {
 	String *dest = makeEmptyString();
 
 	dest->length = break_len + 1;
@@ -100,8 +94,7 @@ String *breakString(String src, int break_len)
 	in the struct string pointer and returns it such that it can be
 	used easily at later occurrences.
 */
-String *attachString(char *x, char *y)
-{
+String *attachString(char *x, char *y) {
 	String *attached;
 
 	attached = makeString(x);
